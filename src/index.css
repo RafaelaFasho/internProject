@@ -1,0 +1,335 @@
+/* Register Page */
+
+.register-page {
+  width: 100%;
+  height: 100%;
+  background-color: #2b2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
+.logo-container {
+  position: absolute;
+  top: 51px;
+  left: 48px;
+}
+
+.soluna-logo {
+  width: 222.51px;
+  height: 58.05px;
+}
+
+.register-box {
+  background-color: #121212;
+  padding: 32px;
+  border-radius: 16px;
+  gap: 10px;
+  width: 577px;
+  height: 980px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.register-form {
+  width: 513px;
+  height: 890px;
+  gap: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.register-title-content {
+  width: 513px;
+  height: 54px;
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.register-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 24px;
+  color: #ffffff;
+  width: 513px;
+  height: 24px;
+  margin: 0;
+}
+
+.register-subtitle {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #a9a9a9;
+  width: 430px;
+  height: 22px;
+  margin: 0;
+}
+
+.register-fields-form {
+  width: 513px;
+  height: 800px;
+  gap: 30px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.register-fields {
+  width: 513px;
+  height: 76.29px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.register-fields label {
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  width: 513px;
+  height: 20px;
+  gap: 10px;
+}
+
+.register-textfield .MuiOutlinedInput-root {
+  border-radius: 8px;
+  border: 1px;
+  gap: 10px;
+  padding-top: 12px;
+  padding-right: 16px;
+  padding-bottom: 12px;
+  padding-left: 16px;
+  width: 513px;
+  height: 30px;
+}
+
+.text-field input {
+  color: #a9a9a9;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.text-field input::placeholder {
+  color: #a9a9a9;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.text-field .MuiOutlinedInput-notchedOutline {
+  border-color: #3b3b3b;
+}
+
+.country-code .MuiSelect-select {
+  color: #3b3b3b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.MuiMenu-paper {
+  background-color: #121212 !important;
+  color: #3b3b3b !important;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.register-button {
+  background-color: #7be4e8 !important;
+  color: #161616 !important;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  line-height: 22px;
+  padding-top: 12px;
+  padding-right: 16px;
+  padding-bottom: 12px;
+  padding-left: 16px;
+  border-radius: 8px;
+  text-transform: none;
+  width: 513px;
+  height: 46px;
+  margin-top: 16px;
+}
+
+.register-footer {
+  color: #a9a9a9;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  margin: 0;
+  height: 22px;
+  width: 513px;
+}
+
+.register-footer a {
+  color: #7be4e8;
+  text-decoration: none;
+}
+
+/* Login Page */
+
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  background-color: #2b2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-box {
+  background-color: #121212;
+  padding: 32px;
+  border-radius: 16px;
+  gap: 10px;
+  width: 577px;
+  height: 454px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.login-form {
+  width: 513px;
+  height: 390px;
+  gap: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.login-title-content {
+  width: 380px;
+  height: 54px;
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 24px;
+  color: #ffffff;
+  width: 358px;
+  height: 24px;
+  margin: 0;
+}
+
+.login-subtitle {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #a9a9a9;
+  width: 380px;
+  height: 22px;
+  margin: 0;
+}
+
+.login-fields-form {
+  width: 513px;
+  height: 210px;
+  gap: 30px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.login-fields {
+  width: 513px;
+  height: 84px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-fields label {
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  width: 513px;
+  height: 22px;
+}
+
+.login-textfield .MuiOutlinedInput-root {
+  border-radius: 8px;
+  border: 1px;
+  gap: 10px;
+  padding-top: 12px;
+  padding-right: 16px;
+  padding-bottom: 12px;
+  padding-left: 16px;
+  width: 513px;
+  height: 52px;
+}
+
+.text-field input {
+  color: #a9a9a9;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.text-field input::placeholder {
+  color: #a9a9a9;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.text-field .MuiOutlinedInput-notchedOutline {
+  border-color: #3b3b3b;
+}
+
+.login-button {
+  background-color: #7be4e8 !important;
+  color: #161616 !important;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  line-height: 22px;
+  padding-top: 12px;
+  padding-right: 16px;
+  padding-bottom: 12px;
+  padding-left: 16px;
+  border-radius: 8px;
+  text-transform: none;
+  width: 513px;
+  height: 46px;
+  margin-top: 16px;
+}
+
+.login-footer {
+  color: #a9a9a9;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  height: 22px;
+  width: 513px;
+  margin-top: 40px;
+}
+
+.login-footer a {
+  color: #7be4e8;
+  text-decoration: none;
+}
