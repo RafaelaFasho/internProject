@@ -6,6 +6,7 @@ import * as yup from "yup";
 import axios from "axios";
 import "../index.css";
 import solunaLogo from "../assets/solunaLogo.png";
+import axiosInstance from "../utils/axios";
 
 const countryCodes = [
   { code: "+355", label: "Albania", flag: "🇦🇱" },
@@ -17,14 +18,14 @@ const validationSchema = yup.object({
   firstName: yup.string().required("First name is required"),
   lastName: yup.string().required("Last name is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
-  birthday: yup
+  birthdate: yup
     .string()
     .matches(
       /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/(19|20)\d\d$/,
       "Birthday must be in DD/MM/YYYY format"
     )
     .required("Birthday is required"),
-  phoneNumber: yup
+  phone: yup
     .string()
     .min(5, "Phone number is too short")
     .required("Phone number is required"),
@@ -42,13 +43,21 @@ function Register() {
   const [selectedCode, setSelectedCode] = useState("+355");
   const navigate = useNavigate();
 
+  function convertToISO(dateStr: string): string {
+    const [day, month, year] = dateStr.split("/");
+    const isoString = new Date(
+      `${year}-${month}-${day}T00:00:00.000Z`
+    ).toISOString();
+    return isoString;
+  }
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
       email: "",
-      birthday: "",
-      phoneNumber: "",
+      birthdate: "",
+      phone: "",
       username: "",
       password: "",
     },
@@ -59,19 +68,22 @@ function Register() {
           firstName: values.firstName,
           lastName: values.lastName,
           email: values.email,
-          birthday: values.birthday,
-          phoneNumber: selectedCode + values.phoneNumber,
+          birthdate: convertToISO(values.birthdate),
+          phone: selectedCode + values.phone,
           username: values.username,
           password: values.password,
         };
 
-        const response = await axios.post(
-          "/api/authentication/register",
+        const response = await axiosInstance.post(
+          "/authentication/register",
           payload
         );
 
         if (response.status === 201 || response.status === 200) {
+          localStorage.setItem("registeredUser", JSON.stringify(payload));
+
           alert("Account created successfully!");
+
           navigate("/login");
         } else {
           setStatus("Something went wrong, please try again.");
@@ -82,6 +94,9 @@ function Register() {
             setStatus(error.response.data.message || "Registration failed");
           } else {
             setStatus("Registration failed due to network or server error");
+            /* console.log(
+              `${import.meta.env.VITE_API_URL}/authentication/register`
+            );*/
           }
         } else {
           setStatus("An unexpected error occurred");
@@ -162,38 +177,33 @@ function Register() {
             <div className="register-fields">
               <label>Birthday</label>
               <TextField
-                name="birthday"
+                name="birthdate"
                 variant="outlined"
                 fullWidth
                 placeholder="DD/MM/YYYY"
                 className="text-field"
-                value={formik.values.birthday}
+                value={formik.values.birthdate}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={
-                  formik.touched.birthday && Boolean(formik.errors.birthday)
+                  formik.touched.birthdate && Boolean(formik.errors.birthdate)
                 }
-                helperText={formik.touched.birthday && formik.errors.birthday}
+                helperText={formik.touched.birthdate && formik.errors.birthdate}
               />
             </div>
 
             <div className="register-fields">
               <label>Phone Number</label>
               <TextField
-                name="phoneNumber"
+                name="phone"
                 variant="outlined"
                 fullWidth
                 className="text-field"
-                value={formik.values.phoneNumber}
+                value={formik.values.phone}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={
-                  formik.touched.phoneNumber &&
-                  Boolean(formik.errors.phoneNumber)
-                }
-                helperText={
-                  formik.touched.phoneNumber && formik.errors.phoneNumber
-                }
+                error={formik.touched.phone && Boolean(formik.errors.phone)}
+                helperText={formik.touched.phone && formik.errors.phone}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">

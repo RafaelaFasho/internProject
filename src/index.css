@@ -182,6 +182,16 @@
 
 /* Login Page */
 
+.login-fields-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-fields-form p {
+  margin: 0;
+}
+
 .login-page {
   width: 100vw;
   height: 100vh;

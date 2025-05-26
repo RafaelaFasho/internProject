@@ -3,12 +3,13 @@ import { TextField, Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import axios from "axios";
 import "../index.css";
 import solunaLogo from "../assets/solunaLogo.png";
+import axiosInstance from "../utils/axios";
+import { ACCESS_TOKEN } from "../constants/constants";
 
 const validationSchema = yup.object({
-  username: yup
+  userName: yup
     .string()
     .min(3, "Username should be at least 3 characters")
     .required("Username is required"),
@@ -24,27 +25,49 @@ function Login() {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
+      userName: "",
       password: "",
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
+      setError("");
       try {
-        const response = await axios.post("/api/authentication/login", values);
+        const response = await axiosInstance.post(
+          "/authentication/login",
+          {
+            userName: values.userName,
+            password: values.password,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json-patch+json",
+              accept: "*/*",
+            },
+          }
+        );
+
         if (response.status === 200) {
+          // console.log("🧾 Full login response:", response.data);
+          localStorage.setItem(ACCESS_TOKEN, response.data.token);
+          /*console.log(
+            "✅ Saved access token:",
+            localStorage.getItem(ACCESS_TOKEN)
+          );*/
+
           alert("Login successful!");
-          navigate("/dashboard");
+          navigate("/home");
         } else {
           setError("Invalid credentials. Please try again.");
         }
-      } catch (err) {
+      } catch (err: any) {
+        console.log("Login error:", err);
+        console.log("Error response:", err.response);
         setError("Login failed. Please check your username and password.");
       } finally {
         setSubmitting(false);
       }
     },
   });
-
   return (
     <div className="login-page">
       <div className="logo-container">
@@ -63,18 +86,18 @@ function Login() {
             <div className="register-fields">
               <label>Username</label>
               <TextField
-                name="username"
+                name="userName"
                 variant="outlined"
                 fullWidth
                 placeholder="Your username"
                 className="text-field"
-                value={formik.values.username}
+                value={formik.values.userName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={
-                  formik.touched.username && Boolean(formik.errors.username)
+                  formik.touched.userName && Boolean(formik.errors.userName)
                 }
-                helperText={formik.touched.username && formik.errors.username}
+                helperText={formik.touched.userName && formik.errors.userName}
               />
             </div>
 
@@ -97,9 +120,7 @@ function Login() {
               />
             </div>
 
-            {error && (
-              <p style={{ color: "red", marginTop: "10px" }}>{error}</p>
-            )}
+            {error && <p style={{ color: "red" }}>{error}</p>}
 
             <Button
               variant="contained"
