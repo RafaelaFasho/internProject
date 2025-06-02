@@ -47,10 +47,10 @@ function Login() {
         );
 
         if (response.status === 200) {
-          // console.log("🧾 Full login response:", response.data);
+          // console.log(" Full login response:", response.data);
           localStorage.setItem(ACCESS_TOKEN, response.data.token);
           /*console.log(
-            "✅ Saved access token:",
+            "Saved access token:",
             localStorage.getItem(ACCESS_TOKEN)
           );*/
 
@@ -69,7 +69,7 @@ function Login() {
     },
   });
   return (
-    <div className="login-page">
+    <div className="page">
       <div className="logo-container">
         <img src={solunaLogo} alt="Soluna Logo" className="soluna-logo" />
       </div>
