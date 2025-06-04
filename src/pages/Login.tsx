@@ -49,10 +49,10 @@ function Login() {
         if (response.status === 200) {
           // console.log(" Full login response:", response.data);
           localStorage.setItem(ACCESS_TOKEN, response.data.token);
-          /*console.log(
+          console.log(
             "Saved access token:",
             localStorage.getItem(ACCESS_TOKEN)
-          );*/
+          );
 
           alert("Login successful!");
           navigate("/home");

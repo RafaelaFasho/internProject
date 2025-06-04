@@ -1,14 +1,30 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ACCESS_TOKEN } from "../constants/constants";
 import { Upload } from "lucide-react";
+
+interface Product {
+  id: number;
+  Name: string;
+  ShortDescription: string;
+  LongDescription: string;
+  CategoryId: string;
+  Price: string;
+  ImageUrl?: string;
+}
 
 interface ProductModalProps {
   isOpen: boolean;
   onClose: () => void;
   categories: { id: number; code: string; description: string }[];
+  existingProduct?: Product;
 }
 
-const ProductModal = ({ isOpen, onClose, categories }: ProductModalProps) => {
+const ProductModal = ({
+  isOpen,
+  onClose,
+  categories,
+  existingProduct,
+}: ProductModalProps) => {
   const [formData, setFormData] = useState({
     Name: "",
     ShortDescription: "",
@@ -17,13 +33,43 @@ const ProductModal = ({ isOpen, onClose, categories }: ProductModalProps) => {
     Price: "",
   });
 
-  const [image, setImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (existingProduct) {
+      setFormData({
+        Name: existingProduct.Name || "",
+        ShortDescription: existingProduct.ShortDescription || "",
+        LongDescription: existingProduct.LongDescription || "",
+        CategoryId: existingProduct.CategoryId || "",
+        Price: existingProduct.Price || "",
+      });
+
+      if (existingProduct.ImageUrl) {
+        setPreviewUrl(existingProduct.ImageUrl);
+      } else {
+        setPreviewUrl(null);
+      }
+    } else {
+      setFormData({
+        Name: "",
+        ShortDescription: "",
+        LongDescription: "",
+        CategoryId: "",
+        Price: "",
+      });
+      setImageFile(null);
+      setPreviewUrl(null);
+    }
+  }, [existingProduct, isOpen]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
+      setImageFile(file);
       const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl);
+      setPreviewUrl(imageUrl);
     }
   };
 
@@ -51,29 +97,48 @@ const ProductModal = ({ isOpen, onClose, categories }: ProductModalProps) => {
     data.append("LongDescription", formData.LongDescription);
     data.append("CategoryId", formData.CategoryId);
     data.append("Price", formData.Price);
-    if (image) {
-      data.append("ImageUpload", image);
+
+    if (imageFile) {
+      data.append("ImageUpload", imageFile);
     }
 
     try {
       const token = localStorage.getItem(ACCESS_TOKEN);
+      const url = existingProduct
+        ? `http://192.168.10.248:2208/api/product/${existingProduct.id}`
+        : "http://192.168.10.248:2208/api/product";
+      const method = existingProduct ? "PUT" : "POST";
 
-      const res = await fetch("http://192.168.10.248:2208/api/product", {
-        method: "POST",
+      const res = await fetch(url, {
+        method,
         headers: {
-          Accept: "*/*",
           Authorization: `Bearer ${token}`,
         },
         body: data,
       });
 
       if (res.ok) {
-        alert("Product added successfully!");
+        alert(
+          existingProduct
+            ? "Product updated successfully!"
+            : "Product added successfully!"
+        );
         onClose();
+        setFormData({
+          Name: "",
+          ShortDescription: "",
+          LongDescription: "",
+          CategoryId: "",
+          Price: "",
+        });
+        setImageFile(null);
+        setPreviewUrl(null);
       } else if (res.status === 401) {
         alert("Unauthorized: please log in again.");
       } else {
-        alert("Error while creating the product.");
+        const errorText = await res.text();
+        console.error("Error response:", errorText);
+        alert("Error while saving the product.");
       }
     } catch (err) {
       console.error(err);
@@ -88,9 +153,10 @@ const ProductModal = ({ isOpen, onClose, categories }: ProductModalProps) => {
       <div className="modal">
         <div className="all-modal-header">
           <div className="modal-header">
-            <h2>Create Product</h2>
+            <h2>{existingProduct ? "Edit Product" : "Create Product"}</h2>
             <p>
-              Please complete all information to create your product on the app.
+              Please complete all information to{" "}
+              {existingProduct ? "update" : "create"} your product on the app.
             </p>
           </div>
           <button className="close-button" onClick={onClose}>
@@ -107,18 +173,11 @@ const ProductModal = ({ isOpen, onClose, categories }: ProductModalProps) => {
           />
 
           <textarea
-            name="ShortDescription"
-            placeholder="Short Description"
-            value={formData.ShortDescription}
-            onChange={handleChange}
-          />
-
-          <textarea
             name="LongDescription"
             placeholder="Long Description"
             value={formData.LongDescription}
             onChange={handleChange}
-            rows={5}
+            rows={8}
           />
 
           <select
@@ -130,7 +189,6 @@ const ProductModal = ({ isOpen, onClose, categories }: ProductModalProps) => {
             <option value="" disabled hidden>
               Select Category
             </option>
-
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.description}
@@ -158,13 +216,19 @@ const ProductModal = ({ isOpen, onClose, categories }: ProductModalProps) => {
                 style={{ display: "none" }}
               />
             </label>
-            {image && (
-              <img src={image} alt="Uploaded Preview" className="preview" />
+            {previewUrl && (
+              <img
+                src={previewUrl}
+                alt="Uploaded Preview"
+                className="preview"
+              />
             )}
           </div>
 
           <div className="modal-buttons">
-            <button type="submit">Add product</button>
+            <button type="submit">
+              {existingProduct ? "Update Product" : "Add Product"}
+            </button>
           </div>
         </form>
       </div>

@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoute from "./routes/PrivateRoute";
 import Home from "./pages/Home";
-import Product from "./pages/Product";
+import ProductDetails from "./pages/ProductDetails";
 
 function Logout() {
   localStorage.clear();
@@ -25,7 +25,7 @@ function App() {
         path="/product/:id"
         element={
           <PrivateRoute>
-            <Product />
+            <ProductDetails />
           </PrivateRoute>
         }
       />

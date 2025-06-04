@@ -8,7 +8,6 @@ type Category = {
   id: number;
   code: string;
   description: string;
-  // createdAt?: string;  // Shtoje nëse API e ka këtë fushë
 };
 
 const Header = () => {
@@ -19,7 +18,6 @@ const Header = () => {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Funksion për marrjen e kategorive nga API
   const fetchCategories = async () => {
     setLoading(true);
     try {
@@ -32,22 +30,16 @@ const Header = () => {
           },
         }
       );
-
       const data = await res.json();
-      console.log(
-        "Categories fetched from API:",
-        JSON.stringify(data, null, 2)
-      );
 
       if (res.ok) {
         if (data?.resultData?.data && Array.isArray(data.resultData.data)) {
-          // Rendit kategoritë sipas ID-së (nga më e vogla tek më e madhja)
           const sortedData = data.resultData.data.sort(
             (a: Category, b: Category) => a.id - b.id
           );
           setCategories(sortedData);
         } else {
-          alert("Unexpected data format received from server.");
+          alert("Unexpected data format received.");
           setCategories([]);
         }
       } else if (res.status === 401) {
@@ -67,13 +59,9 @@ const Header = () => {
     fetchCategories();
   }, []);
 
-  const openProductModal = () => setIsProductModalOpen(true);
-  const closeProductModal = () => setIsProductModalOpen(false);
-
   const handleAddCategory = async (code: string, description: string) => {
     try {
       const token = localStorage.getItem(ACCESS_TOKEN);
-
       const res = await fetch("http://192.168.10.248:2208/api/category", {
         method: "POST",
         headers: {
@@ -83,9 +71,7 @@ const Header = () => {
         },
         body: JSON.stringify({ code, description }),
       });
-
       const data = await res.json();
-      console.log("Response after add:", JSON.stringify(data, null, 2));
 
       if (res.ok) {
         alert("Category added successfully!");
@@ -112,7 +98,6 @@ const Header = () => {
   ) => {
     try {
       const token = localStorage.getItem(ACCESS_TOKEN);
-
       const res = await fetch(`http://192.168.10.248:2208/api/category/${id}`, {
         method: "PUT",
         headers: {
@@ -122,9 +107,7 @@ const Header = () => {
         },
         body: JSON.stringify({ code, description }),
       });
-
       const data = await res.json();
-      console.log("Response after update:", JSON.stringify(data, null, 2));
 
       if (res.ok) {
         alert("Category updated successfully!");
@@ -147,19 +130,15 @@ const Header = () => {
   const handleDeleteCategory = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this category?"))
       return;
-
     try {
       const token = localStorage.getItem(ACCESS_TOKEN);
-
       const res = await fetch(`http://192.168.10.248:2208/api/category/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
       });
-
       const data = await res.json();
-      console.log("Response after delete:", JSON.stringify(data, null, 2));
 
       if (res.ok) {
         alert("Category deleted successfully!");
@@ -266,14 +245,17 @@ const Header = () => {
 
       <div className="header-bottom">
         <label>Recommended for you</label>
-        <button className="add-product-button" onClick={openProductModal}>
+        <button
+          className="add-product-button"
+          onClick={() => setIsProductModalOpen(true)}
+        >
           Add Product
         </button>
       </div>
 
       <ProductModal
         isOpen={isProductModalOpen}
-        onClose={closeProductModal}
+        onClose={() => setIsProductModalOpen(false)}
         categories={categories}
       />
     </div>
