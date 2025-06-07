@@ -1,6 +1,7 @@
 import { Home, User, Banknote } from "lucide-react";
 import solunaLogo from "../assets/solunaLogo.png";
 import "../index.css";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -13,18 +14,18 @@ const Sidebar = () => {
         />
       </div>
       <nav className="sidebar-menu">
-        <div className="sidebar-item">
+        <Link to="/home" className="sidebar-item">
           <Home className="sidebar-icon" />
           <label>Home</label>
-        </div>
-        <div className="sidebar-item">
+        </Link>
+        <Link to="/bank" className="sidebar-item">
           <Banknote className="sidebar-icon" />
           <label>Bank</label>
-        </div>
-        <div className="sidebar-item">
+        </Link>
+        <Link to="/profile" className="sidebar-item">
           <User className="sidebar-icon" />
           <label>Profile</label>
-        </div>
+        </Link>
       </nav>
     </div>
   );

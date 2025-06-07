@@ -30,7 +30,6 @@ function PrivateRoute({ children }: PrivateRouteProps) {
         setIsAuthorized(true);
       }
     } catch (error) {
-      // Nëse tokeni është i pavlefshëm ose i korruptuar
       setIsAuthorized(false);
     }
   }, []);

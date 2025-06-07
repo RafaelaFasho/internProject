@@ -1,12 +1,14 @@
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { Product } from "../types/Product";
 import { ACCESS_TOKEN } from "../constants/constants";
 import { ArrowLeft, PenLine, Trash2 } from "lucide-react";
 import "../index.css";
-import ProductModal from "../components/createProductModal";
+import ProductModal from "../components/createOrEditModal";
 import { Category } from "../types/Category";
+import DeleteModal from "../components/deleteModal";
+import ChooseBankModal from "../components/chooseBankModal";
 
 interface CategoriesResponse {
   data: Category[];
@@ -19,14 +21,17 @@ interface CategoriesResponse {
 function ProductDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+
   const [product, setProduct] = useState<Product | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [categories, setCategories] = useState<CategoriesResponse | null>(null);
-  const [isCategoriesLoading, setIsCategoriesLoading] = useState<boolean>(true);
+  const [isCategoriesLoading, setIsCategoriesLoading] = useState(true);
 
-  // Fetch categories
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isChooseBankModalOpen, setIsChooseBankModalOpen] = useState(false);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -45,8 +50,6 @@ function ProductDetails() {
         if (!res.ok) throw new Error("Failed to fetch categories");
 
         const rawData = await res.json();
-        console.log("Fetched categories:", rawData);
-
         setCategories(rawData.resultData);
       } catch (error: any) {
         console.error(error);
@@ -59,8 +62,9 @@ function ProductDetails() {
     fetchCategories();
   }, []);
 
-  // Fetch product details
   useEffect(() => {
+    if (!id) return;
+
     const fetchProduct = async () => {
       try {
         const token = localStorage.getItem(ACCESS_TOKEN);
@@ -91,51 +95,170 @@ function ProductDetails() {
       }
     };
 
-    if (id) fetchProduct();
+    fetchProduct();
   }, [id]);
 
-  if (error) return <p className="error-message">{error}</p>;
-  if (!product)
-    return <p className="loading-message">Loading product details...</p>;
-  if (isCategoriesLoading)
-    return <p className="loading-message">Loading categories...</p>;
+  const handleUpdateProduct = async (
+    updatedProduct: Product & { base64Image?: string | null }
+  ) => {
+    try {
+      const token = localStorage.getItem(ACCESS_TOKEN);
+      if (!token) {
+        setError("No auth token found, please login.");
+        return;
+      }
 
-  const handleBack = () => {
-    navigate(-1);
+      const base64ImageClean = updatedProduct.base64Image
+        ? updatedProduct.base64Image.replace(/^data:image\/\w+;base64,/, "")
+        : undefined;
+
+      const body: any = {
+        id: updatedProduct.id,
+        name: updatedProduct.name,
+        shortDescription: updatedProduct.shortDescription,
+        longDescription: updatedProduct.longDescription,
+        categoryId:
+          typeof updatedProduct.categoryId === "string"
+            ? parseInt(updatedProduct.categoryId, 10)
+            : updatedProduct.categoryId,
+        price: updatedProduct.price,
+      };
+
+      if (base64ImageClean) {
+        body.base64Image = base64ImageClean;
+      }
+
+      const response = await fetch(
+        `http://192.168.10.248:2208/api/product/${updatedProduct.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update product");
+      }
+
+      const data = await response.json();
+      if (!data.resultData) {
+        throw new Error("Server returned empty product data");
+      }
+
+      setProduct(data.resultData);
+      setIsModalOpen(false);
+      alert("Product updated successfully!");
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Failed to update product");
+    }
   };
 
+  const handleBack = () => navigate(-1);
+
   const handleEditClick = () => {
-    if (!categories || categories.data.length === 0) {
+    if (!categories?.data?.length) {
       alert("Categories not loaded yet, please wait a moment.");
+      return;
+    }
+    if (!product) {
+      alert("Product data is not loaded yet.");
       return;
     }
     setIsModalOpen(true);
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+  const handleModalClose = () => setIsModalOpen(false);
+
+  const openDeleteModal = () => {
+    console.log("Delete modal should open now!");
+    setIsDeleteModalOpen(true);
   };
+
+  const closeDeleteModal = () => setIsDeleteModalOpen(false);
+
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem(ACCESS_TOKEN);
+      if (!token) {
+        setError("No auth token found, please login.");
+        return;
+      }
+
+      const response = await fetch(
+        `http://192.168.10.248:2208/api/product/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete product");
+      }
+
+      alert("Product deleted successfully!");
+      navigate(-1);
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Failed to delete product");
+    } finally {
+      closeDeleteModal();
+    }
+  };
+
+  const handleConfirmBankAccount = (bankAccountId: number) => {
+    alert(`You chose bank account ID: ${bankAccountId} to buy the product.`);
+
+    setIsChooseBankModalOpen(false);
+  };
+
+  if (error) return <p className="error-message">{error}</p>;
+  if (isCategoriesLoading)
+    return <p className="loading-message">Loading categories...</p>;
+  if (!product)
+    return <p className="loading-message">Loading product details...</p>;
 
   return (
     <>
       <div className="page">
         <Sidebar />
-
         <div className="main-content">
           <div className="header-top">
-            <div className="icon-group" onClick={handleBack}>
+            <div
+              className="icon-group"
+              onClick={handleBack}
+              style={{ cursor: "pointer" }}
+              aria-label="Go back"
+            >
               <div className="header-icon">
                 <ArrowLeft className="icon" />
               </div>
             </div>
 
             <div className="icon-group">
-              <div className="header-icon" onClick={handleEditClick}>
+              <div
+                className="header-icon"
+                onClick={handleEditClick}
+                style={{ cursor: "pointer" }}
+                aria-label="Edit product"
+              >
                 <PenLine className="icon" />
               </div>
               <div
                 className="header-icon"
-                onClick={() => console.log("Delete")}
+                onClick={openDeleteModal}
+                style={{ cursor: "pointer" }}
+                aria-label="Delete product"
               >
                 <Trash2 className="icon" />
               </div>
@@ -146,38 +269,63 @@ function ProductDetails() {
             <div className="image-container">
               <img
                 className="product-image"
-                src={`data:image/png;base64,${product.base64Image}`}
+                src={
+                  product.base64Image
+                    ? `data:image/png;base64,${product.base64Image}`
+                    : "/placeholder-image.png"
+                }
                 alt={product.name}
               />
             </div>
             <div className="details-container">
               <h2 className="product-title">{product.name}</h2>
-              <p className="product-price">Price: {product.price} €</p>
+              <p className="product-price">
+                Price: {product.price.toFixed(2)} €
+              </p>
               <p className="product-description">
                 {product.longDescription || "No description available."}
               </p>
-              <button className="buy-now-button">Buy Now</button>
+              <button
+                className="buy-now-button"
+                onClick={() => setIsChooseBankModalOpen(true)}
+              >
+                Buy Now
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {isModalOpen && categories && (
+      {isModalOpen && categories && product && (
         <ProductModal
           isOpen={isModalOpen}
           onClose={handleModalClose}
           categories={categories.data}
           existingProduct={{
             id: product.id,
-            Name: product.name,
-            ShortDescription: product.shortDescription || "",
-            LongDescription: product.longDescription || "",
-            CategoryId: product.categoryId,
-            Price: product.price.toString(),
-            ImageUrl: product.base64Image
-              ? `data:image/png;base64,${product.base64Image}`
-              : undefined,
+            name: product.name,
+            shortDescription: product.shortDescription || "",
+            longDescription: product.longDescription || "",
+            categoryId: product.categoryId,
+            price: product.price,
+            base64Image: product.base64Image,
           }}
+          onSave={handleUpdateProduct}
+        />
+      )}
+
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        itemName={product ? product.name : "this product"}
+        onCancel={closeDeleteModal}
+        onConfirm={handleDelete}
+      />
+
+      {isChooseBankModalOpen && (
+        <ChooseBankModal
+          isOpen={isChooseBankModalOpen}
+          onClose={() => setIsChooseBankModalOpen(false)}
+          onConfirm={handleConfirmBankAccount}
         />
       )}
     </>

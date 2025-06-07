@@ -1,7 +1,6 @@
 import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
+import Header from "../components/HomeContent";
 import "../index.css";
-import ProductList from "../components/ProductList";
 
 function Home() {
   return (
@@ -9,7 +8,6 @@ function Home() {
       <Sidebar />
       <div className="main-content">
         <Header />
-        <ProductList />
       </div>
     </div>
   );
