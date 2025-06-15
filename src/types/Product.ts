@@ -5,5 +5,5 @@ export interface Product {
   longDescription: string;
   categoryId: string;
   price: number;
-  base64Image: string;
+  ImageUpload: File | string;
 }

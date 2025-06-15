@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { ACCESS_TOKEN } from "../constants/constants";
 import { Upload } from "lucide-react";
 import { Product } from "../types/Product";
 import { Category } from "../types/Category";
+import axiosInstance from "../utils/axios";
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -12,6 +12,14 @@ interface ProductModalProps {
   onSave: (updatedProduct: Product) => Promise<void>;
 }
 
+interface FormDataState {
+  name: string;
+  shortDescription: string;
+  longDescription: string;
+  categoryId: string;
+  price: string;
+}
+
 const ProductModal = ({
   isOpen,
   onClose,
@@ -19,12 +27,13 @@ const ProductModal = ({
   existingProduct,
   onSave,
 }: ProductModalProps) => {
-  const [formData, setFormData] = useState({
-    Name: "",
-    ShortDescription: "",
-    LongDescription: "",
-    CategoryId: "",
-    Price: "",
+  // Form fields without ImageUpload since it's File type in Product
+  const [formData, setFormData] = useState<FormDataState>({
+    name: "",
+    shortDescription: "",
+    longDescription: "",
+    categoryId: "",
+    price: "",
   });
 
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -34,44 +43,61 @@ const ProductModal = ({
   useEffect(() => {
     if (existingProduct) {
       setFormData({
-        Name: existingProduct.name || "",
-        ShortDescription: existingProduct.shortDescription || "",
-        LongDescription: existingProduct.longDescription || "",
-        CategoryId: existingProduct.categoryId || "",
-        Price: existingProduct.price?.toString() || "",
+        name: existingProduct.name || "",
+        shortDescription: existingProduct.shortDescription || "",
+        longDescription: existingProduct.longDescription || "",
+        categoryId: existingProduct.categoryId?.toString() || "",
+        price: existingProduct.price?.toString() || "",
       });
-      setPreviewUrl(existingProduct.base64Image || null);
+
+      if (existingProduct.ImageUpload instanceof File) {
+        // If ImageUpload is a File object, create preview URL
+        const url = URL.createObjectURL(existingProduct.ImageUpload);
+        setPreviewUrl(url);
+      } else if (
+        typeof existingProduct.ImageUpload === "string" &&
+        existingProduct.ImageUpload.startsWith("http")
+      ) {
+        setPreviewUrl(existingProduct.ImageUpload);
+      } else if (typeof existingProduct.ImageUpload === "string") {
+        // Assume relative path
+        setPreviewUrl(
+          `http://192.168.10.248:2208/${existingProduct.ImageUpload}`
+        );
+      } else {
+        setPreviewUrl(null);
+      }
+
       setImageFile(null);
     } else {
       setFormData({
-        Name: "",
-        ShortDescription: "",
-        LongDescription: "",
-        CategoryId: "",
-        Price: "",
+        name: "",
+        shortDescription: "",
+        longDescription: "",
+        categoryId: "",
+        price: "",
       });
-      setImageFile(null);
       setPreviewUrl(null);
+      setImageFile(null);
     }
-  }, [existingProduct, isOpen]);
 
-  useEffect(() => {
+    // Cleanup preview URL on unmount or change
     return () => {
-      if (previewUrl && imageFile) {
+      if (previewUrl) {
         URL.revokeObjectURL(previewUrl);
       }
     };
-  }, [previewUrl, imageFile]);
+  }, [existingProduct, isOpen]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      if (previewUrl && imageFile) {
+      if (previewUrl) {
         URL.revokeObjectURL(previewUrl);
       }
-      setImageFile(file);
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
+      setImageFile(file);
     }
   };
 
@@ -91,84 +117,48 @@ const ProductModal = ({
     e.preventDefault();
 
     if (
-      !formData.Name.trim() ||
-      !formData.CategoryId ||
-      !formData.Price.trim()
+      !formData.name.trim() ||
+      !formData.categoryId ||
+      !formData.price.trim()
     ) {
       alert("Please fill all required fields.");
+      return;
+    }
+
+    if (!existingProduct && !imageFile) {
+      alert("Product image is required!");
       return;
     }
 
     setSaving(true);
 
     try {
-      const token = localStorage.getItem(ACCESS_TOKEN);
-      if (!token) {
-        alert("Unauthorized: please log in.");
-        setSaving(false);
-        return;
-      }
-
-      console.log("Token length:", token.length);
-      if (token.length > 8000) {
-        alert("Your authorization token is too large.");
-        setSaving(false);
-        return;
-      }
+      const url = existingProduct
+        ? `/product/${existingProduct.id}`
+        : "/product";
+      const method = existingProduct ? "put" : "post";
 
       const data = new FormData();
-
-      if (existingProduct) {
-        data.append("Name", formData.Name || existingProduct.name || "");
-        data.append(
-          "ShortDescription",
-          formData.ShortDescription || existingProduct.shortDescription || ""
-        );
-        data.append(
-          "LongDescription",
-          formData.LongDescription || existingProduct.longDescription || ""
-        );
-        data.append(
-          "CategoryId",
-          formData.CategoryId || existingProduct.categoryId || ""
-        );
-        data.append(
-          "Price",
-          formData.Price || existingProduct.price?.toString() || ""
-        );
-      } else {
-        data.append("Name", formData.Name);
-        data.append("ShortDescription", formData.ShortDescription);
-        data.append("LongDescription", formData.LongDescription);
-        data.append("CategoryId", formData.CategoryId);
-        data.append("Price", formData.Price);
-      }
+      data.append("Name", formData.name);
+      data.append("ShortDescription", formData.shortDescription);
+      data.append("LongDescription", formData.longDescription);
+      data.append("CategoryId", formData.categoryId);
+      data.append("Price", formData.price);
 
       if (imageFile) {
         data.append("ImageUpload", imageFile);
       }
 
-      const url = existingProduct
-        ? `http://192.168.10.248:2208/api/product/${existingProduct.id}`
-        : "http://192.168.10.248:2208/api/product";
-      const method = existingProduct ? "PUT" : "POST";
-
-      const res = await fetch(url, {
+      const response = await axiosInstance.request({
+        url,
         method,
+        data,
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
-        body: data,
       });
 
-      if (!res.ok) {
-        const errorText = await res.text();
-        alert(`Error saving product: ${errorText}`);
-        setSaving(false);
-        return;
-      }
-
-      const savedData = await res.json();
+      const savedData = response.data;
 
       if (!savedData || !savedData.resultData) {
         alert("Server returned empty product data");
@@ -178,16 +168,17 @@ const ProductModal = ({
 
       await onSave(savedData.resultData);
 
+      console.log(savedData.resultData);
+
       alert(
         existingProduct
           ? "Product updated successfully!"
-          : "Product added successfully!"
+          : "Product created successfully!"
       );
       onClose();
-      window.location.reload();
-    } catch (error) {
-      console.error("Network error:", error);
-      alert("Network error while saving product.");
+    } catch (error: any) {
+      console.error("Error saving product:", error);
+      alert(error.response?.data?.message || "Error while saving product.");
     } finally {
       setSaving(false);
     }
@@ -210,37 +201,38 @@ const ProductModal = ({
             X
           </button>
         </div>
+
         <form onSubmit={handleSubmit} className="modal-form">
           <input
             type="text"
-            name="Name"
+            name="name"
             placeholder="Name"
-            value={formData.Name}
+            value={formData.name}
             onChange={handleChange}
             required
             disabled={saving}
           />
 
           <textarea
-            name="ShortDescription"
+            name="shortDescription"
             placeholder="Short Description"
-            value={formData.ShortDescription}
+            value={formData.shortDescription}
             onChange={handleChange}
             disabled={saving}
           />
 
           <textarea
-            name="LongDescription"
+            name="longDescription"
             placeholder="Long Description"
-            value={formData.LongDescription}
+            value={formData.longDescription}
             onChange={handleChange}
             rows={6}
             disabled={saving}
           />
 
           <select
-            name="CategoryId"
-            value={formData.CategoryId}
+            name="categoryId"
+            value={formData.categoryId}
             onChange={handleChange}
             required
             disabled={saving}
@@ -257,9 +249,9 @@ const ProductModal = ({
 
           <input
             type="number"
-            name="Price"
+            name="price"
             placeholder="Price"
-            value={formData.Price}
+            value={formData.price}
             onChange={handleChange}
             required
             disabled={saving}
@@ -285,7 +277,7 @@ const ProductModal = ({
                 src={previewUrl}
                 alt="Uploaded Preview"
                 className="preview"
-                style={{ maxHeight: "150px", marginTop: "10px" }}
+                style={{ maxHeight: 150, marginTop: 10 }}
               />
             )}
           </div>
@@ -295,7 +287,7 @@ const ProductModal = ({
               {saving
                 ? existingProduct
                   ? "Updating..."
-                  : "Adding..."
+                  : "Creating..."
                 : existingProduct
                 ? "Update Product"
                 : "Add Product"}

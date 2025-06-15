@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Bank from "./pages/Bank";
 import Profile from "./pages/Profile";
 import ProductDetails from "./pages/ProductDetails";
+import BankDetails from "./pages/BankDetails";
 
 function Logout() {
   localStorage.clear();
@@ -44,6 +45,14 @@ function App() {
         element={
           <PrivateRoute>
             <ProductDetails />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/bank/:id"
+        element={
+          <PrivateRoute>
+            <BankDetails />
           </PrivateRoute>
         }
       />

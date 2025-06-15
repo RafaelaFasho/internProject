@@ -3,8 +3,8 @@ import { PenLine, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import "../index.css";
 import ProductModal from "./createOrEditModal";
-import { ACCESS_TOKEN } from "../constants/constants";
 import { Product } from "../types/Product";
+import axiosInstance from "../utils/axios";
 
 type Category = {
   id: number;
@@ -14,7 +14,7 @@ type Category = {
 
 const PRODUCTS_PER_PAGE = 20;
 
-const Header = () => {
+const HomeContent = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<
     number | "all" | null
@@ -30,35 +30,30 @@ const Header = () => {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem(ACCESS_TOKEN);
-      const res = await fetch(
-        "http://192.168.10.248:2208/api/category/get-all",
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
-      const data = await res.json();
+      const res = await axiosInstance.get("/category/get-all");
 
-      if (res.ok) {
-        if (data?.resultData?.data && Array.isArray(data.resultData.data)) {
-          const sortedData = data.resultData.data.sort(
-            (a: Category, b: Category) => a.id - b.id
-          );
-          setCategories(sortedData);
-        } else {
-          alert("Unexpected data format received.");
-          setCategories([]);
-        }
-      } else if (res.status === 401) {
+      const data = res.data;
+
+      if (data?.resultData?.data && Array.isArray(data.resultData.data)) {
+        const sortedData = data.resultData.data.sort(
+          (a: Category, b: Category) => a.id - b.id
+        );
+        setCategories(sortedData);
+      } else {
+        alert("Unexpected data format received.");
+        setCategories([]);
+      }
+    } catch (error: any) {
+      if (error.response?.status === 401) {
         alert("Unauthorized: please log in again.");
       } else {
-        alert(`Error fetching categories: ${data?.message || "Unknown error"}`);
+        alert(
+          `Error fetching categories: ${
+            error.response?.data?.message || error.message || "Unknown error"
+          }`
+        );
       }
-    } catch (error) {
-      console.error(error);
-      alert("Network error.");
+      console.error("fetchCategories error:", error);
     } finally {
       setLoading(false);
     }
@@ -70,41 +65,30 @@ const Header = () => {
     setProducts([]);
     setVisibleProducts([]);
     setCurrentPage(1);
-    const token = localStorage.getItem(ACCESS_TOKEN);
-    if (!token) {
-      setError("No auth token found, please login.");
-      setLoadingProducts(false);
-      return;
-    }
 
     let url = "";
     if (categoryId === "all" || categoryId === null) {
-      url = "http://192.168.10.248:2208/api/product/get-all?limit=1000";
+      url = "/product/get-all?limit=1000";
     } else {
-      url = `http://192.168.10.248:2208/api/product/${categoryId}/get-all?limit=1000`;
+      url = `/product/${categoryId}/get-all?limit=1000`;
     }
 
     try {
-      const response = await fetch(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosInstance.get(url);
+      const data = response.data;
 
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
-      }
-
-      const data = await response.json();
       const allProducts = Array.isArray(data.resultData.data)
         ? data.resultData.data
         : [];
+
       console.log("Fetched products count:", allProducts.length);
+      console.log(data.resultData.data);
       setProducts(allProducts);
       setVisibleProducts(allProducts.slice(0, PRODUCTS_PER_PAGE));
     } catch (err: any) {
-      setError(err.message || "Failed to fetch products");
+      setError(
+        err.response?.data?.message || err.message || "Failed to fetch products"
+      );
     } finally {
       setLoadingProducts(false);
     }
@@ -131,33 +115,23 @@ const Header = () => {
 
   const handleAddCategory = async (code: string, description: string) => {
     try {
-      const token = localStorage.getItem(ACCESS_TOKEN);
-      const res = await fetch("http://192.168.10.248:2208/api/category", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-        body: JSON.stringify({ code, description }),
+      await axiosInstance.post("/category", {
+        code,
+        description,
       });
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("Category added successfully!");
-        await fetchCategories();
-      } else if (res.status === 401) {
+      alert("Category added successfully!");
+      await fetchCategories();
+    } catch (err: any) {
+      if (err.response?.status === 401) {
         alert("Unauthorized: please log in again.");
       } else {
         alert(
           `Error while creating the category: ${
-            data?.message || "Unknown error"
+            err.response?.data?.message || "Unknown error"
           }`
         );
       }
-    } catch (err) {
       console.error(err);
-      alert("Network error.");
     }
   };
 
@@ -167,65 +141,46 @@ const Header = () => {
     description: string
   ) => {
     try {
-      const token = localStorage.getItem(ACCESS_TOKEN);
-      const res = await fetch(`http://192.168.10.248:2208/api/category/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-        body: JSON.stringify({ code, description }),
+      await axiosInstance.put(`/category/${id}`, {
+        code,
+        description,
       });
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("Category updated successfully!");
-        await fetchCategories();
-      } else if (res.status === 401) {
+      alert("Category updated successfully!");
+      await fetchCategories();
+    } catch (err: any) {
+      if (err.response?.status === 401) {
         alert("Unauthorized: please log in again.");
       } else {
         alert(
           `Error while updating the category: ${
-            data?.message || "Unknown error"
+            err.response?.data?.message || "Unknown error"
           }`
         );
       }
-    } catch (err) {
       console.error(err);
-      alert("Network error.");
     }
   };
 
   const handleDeleteCategory = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this category?"))
       return;
-    try {
-      const token = localStorage.getItem(ACCESS_TOKEN);
-      const res = await fetch(`http://192.168.10.248:2208/api/category/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      });
-      const data = await res.json();
 
-      if (res.ok) {
-        alert("Category deleted successfully!");
-        if (selectedCategoryId === id) setSelectedCategoryId("all");
-        await fetchCategories();
-      } else if (res.status === 401) {
+    try {
+      await axiosInstance.delete(`/category/${id}`);
+      alert("Category deleted successfully!");
+      if (selectedCategoryId === id) setSelectedCategoryId("all");
+      await fetchCategories();
+    } catch (err: any) {
+      if (err.response?.status === 401) {
         alert("Unauthorized: please log in again.");
       } else {
         alert(
           `Error while deleting the category: ${
-            data?.message || "Unknown error"
+            err.response?.data?.message || "Unknown error"
           }`
         );
       }
-    } catch (err) {
       console.error(err);
-      alert("Network error.");
     }
   };
 
@@ -358,9 +313,16 @@ const Header = () => {
             <div key={product.id} className="product-card">
               <Link to={`/product/${product.id}`}>
                 <img
-                  src={`data:image/png;base64,${product.base64Image}`}
+                  src={
+                    typeof product.ImageUpload === "string"
+                      ? product.ImageUpload
+                      : product.ImageUpload instanceof File
+                      ? URL.createObjectURL(product.ImageUpload)
+                      : "/default.jpg"
+                  }
                   alt={product.name}
                 />
+
                 <label>{product.name}</label>
                 <p>{product.price} €</p>
               </Link>
@@ -378,4 +340,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HomeContent;

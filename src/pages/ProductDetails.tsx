@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { useParams, useNavigate } from "react-router-dom";
 import { Product } from "../types/Product";
-import { ACCESS_TOKEN } from "../constants/constants";
 import { ArrowLeft, PenLine, Trash2 } from "lucide-react";
 import "../index.css";
 import ProductModal from "../components/createOrEditModal";
 import { Category } from "../types/Category";
 import DeleteModal from "../components/deleteModal";
 import ChooseBankModal from "../components/chooseBankModal";
+import axiosInstance from "../utils/axios";
 
 interface CategoriesResponse {
   data: Category[];
@@ -32,25 +32,13 @@ function ProductDetails() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isChooseBankModalOpen, setIsChooseBankModalOpen] = useState(false);
 
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const token = localStorage.getItem(ACCESS_TOKEN);
-        if (!token) {
-          setError("No auth token found, please login.");
-          return;
-        }
-
-        const res = await fetch(
-          "http://192.168.10.248:2208/api/category/get-all",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (!res.ok) throw new Error("Failed to fetch categories");
-
-        const rawData = await res.json();
-        setCategories(rawData.resultData);
+        const res = await axiosInstance.get("/category/get-all");
+        setCategories(res.data.resultData);
       } catch (error: any) {
         console.error(error);
         setError(error.message || "Failed to fetch categories");
@@ -67,28 +55,8 @@ function ProductDetails() {
 
     const fetchProduct = async () => {
       try {
-        const token = localStorage.getItem(ACCESS_TOKEN);
-        if (!token) {
-          setError("No auth token found, please login.");
-          return;
-        }
-
-        const response = await fetch(
-          `http://192.168.10.248:2208/api/product/${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`Error ${response.status}: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        setProduct(data.resultData);
+        const response = await axiosInstance.get(`/product/${id}`);
+        setProduct(response.data.resultData);
       } catch (err: any) {
         console.error(err);
         setError(err.message || "Failed to fetch product details");
@@ -98,16 +66,24 @@ function ProductDetails() {
     fetchProduct();
   }, [id]);
 
+  useEffect(() => {
+    if (
+      typeof product?.ImageUpload === "string" &&
+      product.ImageUpload !== ""
+    ) {
+      const url = product.ImageUpload.startsWith("data:image")
+        ? product.ImageUpload
+        : `http://192.168.10.248:2208/${product.ImageUpload}`;
+      setPreviewUrl(url);
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [product?.ImageUpload]);
+
   const handleUpdateProduct = async (
     updatedProduct: Product & { base64Image?: string | null }
   ) => {
     try {
-      const token = localStorage.getItem(ACCESS_TOKEN);
-      if (!token) {
-        setError("No auth token found, please login.");
-        return;
-      }
-
       const base64ImageClean = updatedProduct.base64Image
         ? updatedProduct.base64Image.replace(/^data:image\/\w+;base64,/, "")
         : undefined;
@@ -128,29 +104,16 @@ function ProductDetails() {
         body.base64Image = base64ImageClean;
       }
 
-      const response = await fetch(
-        `http://192.168.10.248:2208/api/product/${updatedProduct.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(body),
-        }
+      const response = await axiosInstance.put(
+        `/product/${updatedProduct.id}`,
+        body
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to update product");
-      }
-
-      const data = await response.json();
-      if (!data.resultData) {
+      if (!response.data.resultData) {
         throw new Error("Server returned empty product data");
       }
 
-      setProduct(data.resultData);
+      setProduct(response.data.resultData);
       setIsModalOpen(false);
       alert("Product updated successfully!");
     } catch (err: any) {
@@ -175,37 +138,13 @@ function ProductDetails() {
 
   const handleModalClose = () => setIsModalOpen(false);
 
-  const openDeleteModal = () => {
-    console.log("Delete modal should open now!");
-    setIsDeleteModalOpen(true);
-  };
+  const openDeleteModal = () => setIsDeleteModalOpen(true);
 
   const closeDeleteModal = () => setIsDeleteModalOpen(false);
 
   const handleDelete = async () => {
     try {
-      const token = localStorage.getItem(ACCESS_TOKEN);
-      if (!token) {
-        setError("No auth token found, please login.");
-        return;
-      }
-
-      const response = await fetch(
-        `http://192.168.10.248:2208/api/product/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to delete product");
-      }
-
+      await axiosInstance.delete(`/product/${id}`);
       alert("Product deleted successfully!");
       navigate(-1);
     } catch (err: any) {
@@ -218,7 +157,6 @@ function ProductDetails() {
 
   const handleConfirmBankAccount = (bankAccountId: number) => {
     alert(`You chose bank account ID: ${bankAccountId} to buy the product.`);
-
     setIsChooseBankModalOpen(false);
   };
 
@@ -269,11 +207,7 @@ function ProductDetails() {
             <div className="image-container">
               <img
                 className="product-image"
-                src={
-                  product.base64Image
-                    ? `data:image/png;base64,${product.base64Image}`
-                    : "/placeholder-image.png"
-                }
+                src={previewUrl || "/placeholder-image.png"}
                 alt={product.name}
               />
             </div>
@@ -308,7 +242,7 @@ function ProductDetails() {
             longDescription: product.longDescription || "",
             categoryId: product.categoryId,
             price: product.price,
-            base64Image: product.base64Image,
+            ImageUpload: product.ImageUpload,
           }}
           onSave={handleUpdateProduct}
         />

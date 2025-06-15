@@ -1,5 +1,5 @@
 import Sidebar from "../components/Sidebar";
-import Header from "../components/HomeContent";
+import HomeContent from "../components/HomeContent";
 import "../index.css";
 
 function Home() {
@@ -7,7 +7,7 @@ function Home() {
     <div className="page">
       <Sidebar />
       <div className="main-content">
-        <Header />
+        <HomeContent />
       </div>
     </div>
   );

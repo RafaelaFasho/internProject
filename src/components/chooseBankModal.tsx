@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ACCESS_TOKEN } from "../constants/constants";
 import "../index.css";
+import axiosInstance from "../utils/axios";
 
 interface BankAccount {
   id: number;
@@ -41,18 +42,13 @@ const ChooseBankModal: React.FC<ChooseBankModalProps> = ({
           return;
         }
 
-        const response = await fetch(
-          "http://192.168.10.248:2208/api/bankaccount/get-all",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axiosInstance(`/bankaccount/get-all`, {
+          headers: {
+            token: token,
+          },
+        });
 
-        if (!response.ok) {
-          throw new Error("Failed to load bank accounts");
-        }
-
-        const data = await response.json();
+        const data = response.data;
         setBankAccounts(Array.isArray(data.resultData) ? data.resultData : []);
       } catch (err: any) {
         setError(err.message || "Unknown error");

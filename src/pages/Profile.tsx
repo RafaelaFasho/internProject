@@ -3,6 +3,7 @@ import ProfileContent from "../components/ProfileContent";
 import Sidebar from "../components/Sidebar";
 import "../index.css";
 import { ACCESS_TOKEN } from "../constants/constants";
+import axiosInstance from "../utils/axios";
 
 interface ProfileData {
   username: string;
@@ -24,20 +25,13 @@ function Profile() {
         const token = localStorage.getItem(ACCESS_TOKEN);
         if (!token) throw new Error("No access token found");
 
-        const response = await fetch(
-          "http://192.168.10.248:2208/api/authentication/user",
-          {
-            headers: {
-              token: token,
-            },
-          }
-        );
+        const response = await axiosInstance.get(`/authentication/user/`, {
+          headers: {
+            token: token,
+          },
+        });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch profile data");
-        }
-
-        const data = await response.json();
+        const data = response.data;
 
         const fullName =
           data.fullName ||
