@@ -1,6 +1,6 @@
 import Sidebar from "../components/Sidebar";
 import BankContent from "../components/BankContent";
-import "../index.css";
+import "../styles/bank.css";
 
 function Bank() {
   return (

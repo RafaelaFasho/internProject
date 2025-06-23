@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ACCESS_TOKEN } from "../constants/constants";
-import "../index.css";
+import "../styles/bankModals.css";
 import axiosInstance from "../utils/axios";
 
 interface BankAccount {

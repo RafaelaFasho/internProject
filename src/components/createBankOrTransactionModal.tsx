@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 import { Bank } from "../types/Bank";
 import { Transaction } from "../types/Transactions";
 import axiosInstance from "../utils/axios";
-import "../index.css";
+import "../styles/bankModals.css";
 
 interface Currency {
   id: number;

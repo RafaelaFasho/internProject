@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-import "../index.css";
+import "../styles/register.css";
 import solunaLogo from "../assets/solunaLogo.png";
 import axiosInstance from "../utils/axios";
 

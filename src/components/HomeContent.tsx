@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
 import { PenLine, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import "../index.css";
 import ProductModal from "./createOrEditModal";
 import { Product } from "../types/Product";
 import axiosInstance from "../utils/axios";
+import { Category } from "../types/Category";
 
-type Category = {
-  id: number;
-  code: string;
-  description: string;
-};
-
-const PRODUCTS_PER_PAGE = 20;
+const PRODUCTS_PER_PAGE = 10;
 
 const HomeContent = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -314,10 +308,12 @@ const HomeContent = () => {
               <Link to={`/product/${product.id}`}>
                 <img
                   src={
-                    typeof product.ImageUpload === "string"
-                      ? product.ImageUpload
-                      : product.ImageUpload instanceof File
-                      ? URL.createObjectURL(product.ImageUpload)
+                    typeof product.imageUpload === "string" &&
+                    typeof product.imagePath === "string" &&
+                    product.imagePath.trim() !== ""
+                      ? product.imageUpload
+                      : product.imagePath && product.imagePath.trim() !== ""
+                      ? product.imagePath
                       : "/default.jpg"
                   }
                   alt={product.name}

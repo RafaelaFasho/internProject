@@ -1,0 +1,201 @@
+/*Bank Content */
+
+.bankHeader {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  width: 358px;
+  height: 50px;
+  border-radius: 8px;
+  padding: 4px;
+  background-color: #121212;
+  color: #ffffff;
+  margin-bottom: 30px;
+}
+
+.bankHeader button {
+  flex: 1;
+  height: 42px;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #121212;
+  color: #ffffff;
+  border: none;
+}
+
+.bankHeader button.active {
+  background-color: #ffffff;
+  color: #121212;
+}
+
+.bankTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.bankAddButton {
+  width: 150px;
+  height: 42px;
+  border-radius: 10px;
+  padding: 10px 16px;
+  background-color: #7be4e8;
+  color: #171717;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: -2%;
+  cursor: pointer;
+  border: none;
+  margin-left: auto;
+}
+
+.bankGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.bankCard {
+  border: 1px;
+  border-color: #3b3b3b;
+  border-radius: 8px;
+  padding: 24px;
+  background-color: #121212;
+  width: 660px;
+  height: 250px;
+  top: 216px;
+  left: 286px;
+  gap: 10px;
+}
+
+.bankCard h3 {
+  width: 506px;
+  height: 14px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 14px;
+  color: #ffffff;
+}
+
+.bankCard p {
+  width: 506px;
+  height: 14px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #a9a9a9;
+  margin-top: 10px;
+}
+
+.bankCard h2 {
+  width: 506px;
+  height: 14px;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 28px;
+  color: #ffffff;
+  margin-top: 120px;
+}
+.transactionWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.transactionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  height: 52px;
+  padding: 0 16px;
+  border: 1px solid #242424;
+  border-radius: 8px;
+  background-color: #121212;
+  color: white;
+}
+
+.transactionDescription {
+  flex: 1;
+  text-align: left;
+}
+
+.transactionAmount {
+  text-align: right;
+  min-width: 80px;
+  color: #a9a9a9;
+}
+
+.delete-button {
+  background: #121212;
+  border: 1px solid #242424;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50.22px;
+  height: 52px;
+  border-radius: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.delete-button:hover {
+  background: #1e1e1e;
+  color: #dc2626;
+}
+
+/*  Bank Details*/
+.bankDetails {
+  width: 1250px;
+  height: 455px;
+  margin-top: 80px;
+  margin-left: 40px;
+  border-radius: 8px;
+  border: 1px;
+  padding: 32px;
+  gap: 10px;
+  border-color: #3b3b3b;
+  background-color: #121212;
+}
+
+.bankDetails h2 {
+  width: 1060px;
+  height: 24px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.bankDetails p {
+  width: 1060px;
+  height: 16px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  color: #a9a9a9;
+  margin-top: 10px;
+}
+
+.bankDetails h3 {
+  width: 136px;
+  height: 32px;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 32px;
+  color: #ffffff;
+  margin-top: 300px;
+}

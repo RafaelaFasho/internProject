@@ -3,6 +3,7 @@ import { Upload } from "lucide-react";
 import { Product } from "../types/Product";
 import { Category } from "../types/Category";
 import axiosInstance from "../utils/axios";
+import "../styles/productModal.css";
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -50,19 +51,14 @@ const ProductModal = ({
         price: existingProduct.price?.toString() || "",
       });
 
-      if (existingProduct.ImageUpload instanceof File) {
-        // If ImageUpload is a File object, create preview URL
-        const url = URL.createObjectURL(existingProduct.ImageUpload);
+      if (existingProduct.imageUpload instanceof File) {
+        const url = URL.createObjectURL(existingProduct.imageUpload);
         setPreviewUrl(url);
-      } else if (
-        typeof existingProduct.ImageUpload === "string" &&
-        existingProduct.ImageUpload.startsWith("http")
-      ) {
-        setPreviewUrl(existingProduct.ImageUpload);
-      } else if (typeof existingProduct.ImageUpload === "string") {
-        // Assume relative path
+      } else if (typeof existingProduct.imageUpload === "string") {
+        setPreviewUrl(existingProduct.imageUpload);
+      } else if (typeof existingProduct.imageUpload === "string") {
         setPreviewUrl(
-          `http://192.168.10.248:2208/${existingProduct.ImageUpload}`
+          `http://192.168.10.248:2208/${existingProduct.imageUpload}`
         );
       } else {
         setPreviewUrl(null);
@@ -81,7 +77,6 @@ const ProductModal = ({
       setImageFile(null);
     }
 
-    // Cleanup preview URL on unmount or change
     return () => {
       if (previewUrl) {
         URL.revokeObjectURL(previewUrl);
@@ -188,7 +183,7 @@ const ProductModal = ({
 
   return (
     <div className="modal-overlay">
-      <div className="modal">
+      <div className="createOrEditModal">
         <div className="all-modal-header">
           <div className="modal-header">
             <h2>{existingProduct ? "Edit Product" : "Create Product"}</h2>

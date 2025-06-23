@@ -1,6 +1,6 @@
 import { Home, User, Banknote } from "lucide-react";
 import solunaLogo from "../assets/solunaLogo.png";
-import "../index.css";
+import "../styles/sidebar.css";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {

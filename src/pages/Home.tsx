@@ -1,6 +1,6 @@
 import Sidebar from "../components/Sidebar";
 import HomeContent from "../components/HomeContent";
-import "../index.css";
+import "../styles/home.css";
 
 function Home() {
   return (

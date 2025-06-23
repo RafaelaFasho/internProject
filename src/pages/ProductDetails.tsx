@@ -5,18 +5,11 @@ import { Product } from "../types/Product";
 import { ArrowLeft, PenLine, Trash2 } from "lucide-react";
 import "../index.css";
 import ProductModal from "../components/createOrEditModal";
-import { Category } from "../types/Category";
-import DeleteModal from "../components/deleteModal";
+import DeleteModal from "../components/deleteProductModal";
 import ChooseBankModal from "../components/chooseBankModal";
 import axiosInstance from "../utils/axios";
-
-interface CategoriesResponse {
-  data: Category[];
-  currentPage: number;
-  totalPages: number;
-  pageSize: number;
-  totalCount: number;
-}
+import { CategoriesResponse } from "../types/Category";
+import "../styles/productDetails.css";
 
 function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -56,7 +49,12 @@ function ProductDetails() {
     const fetchProduct = async () => {
       try {
         const response = await axiosInstance.get(`/product/${id}`);
-        setProduct(response.data.resultData);
+        const data = response.data.resultData;
+        console.log("Fetched product:", data);
+        setProduct(data);
+        if (data.imagePath) {
+          setPreviewUrl(data.imagePath);
+        }
       } catch (err: any) {
         console.error(err);
         setError(err.message || "Failed to fetch product details");
@@ -65,20 +63,6 @@ function ProductDetails() {
 
     fetchProduct();
   }, [id]);
-
-  useEffect(() => {
-    if (
-      typeof product?.ImageUpload === "string" &&
-      product.ImageUpload !== ""
-    ) {
-      const url = product.ImageUpload.startsWith("data:image")
-        ? product.ImageUpload
-        : `http://192.168.10.248:2208/${product.ImageUpload}`;
-      setPreviewUrl(url);
-    } else {
-      setPreviewUrl(null);
-    }
-  }, [product?.ImageUpload]);
 
   const handleUpdateProduct = async (
     updatedProduct: Product & { base64Image?: string | null }
@@ -114,6 +98,9 @@ function ProductDetails() {
       }
 
       setProduct(response.data.resultData);
+      if (response.data.resultData.imagePath) {
+        setPreviewUrl(response.data.resultData.imagePath);
+      }
       setIsModalOpen(false);
       alert("Product updated successfully!");
     } catch (err: any) {
@@ -209,6 +196,14 @@ function ProductDetails() {
                 className="product-image"
                 src={previewUrl || "/placeholder-image.png"}
                 alt={product.name}
+                style={{
+                  width: "100%",
+                  maxWidth: "300px",
+                  height: "auto",
+                  objectFit: "contain",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                }}
               />
             </div>
             <div className="details-container">
@@ -242,7 +237,7 @@ function ProductDetails() {
             longDescription: product.longDescription || "",
             categoryId: product.categoryId,
             price: product.price,
-            ImageUpload: product.ImageUpload,
+            // imageUpload: product.imageUpload, ❌ Hiqet!
           }}
           onSave={handleUpdateProduct}
         />
@@ -250,7 +245,7 @@ function ProductDetails() {
 
       <DeleteModal
         isOpen={isDeleteModalOpen}
-        itemName={product ? product.name : "this product"}
+        itemName={product.name}
         onCancel={closeDeleteModal}
         onConfirm={handleDelete}
       />

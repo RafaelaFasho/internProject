@@ -1,0 +1,68 @@
+/* Sidebar*/
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 256px;
+  height: 100vh;
+  background-color: #121212;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+.logo-container-sidebar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.soluna-logo-sidebar {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-item {
+  width: 224px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+.sidebar-item:hover {
+  background-color: #7be4e866;
+  color: #7be4e8;
+}
+
+.sidebar-item label {
+  margin: 0;
+  padding: 0;
+  color: #a9a9a9;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  width: 45px;
+  height: 19px;
+}
+
+.sidebar-icon {
+  color: #a9a9a9;
+}

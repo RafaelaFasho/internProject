@@ -5,6 +5,9 @@ import { Bank } from "../types/Bank";
 import { ACCESS_TOKEN } from "../constants/constants";
 import Sidebar from "../components/Sidebar";
 import { ArrowLeft, PenLine, Trash2 } from "lucide-react";
+import EditBankModal from "../components/editBankModal";
+import DeleteBankModal from "../components/deleteBankModal";
+import "../styles/bank.css";
 
 const BankDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +16,9 @@ const BankDetails = () => {
   const [bank, setBank] = useState<Bank | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<"edit" | "delete">("edit");
 
   useEffect(() => {
     const fetchBankDetails = async () => {
@@ -44,29 +50,18 @@ const BankDetails = () => {
   const handleBack = () => navigate(-1);
 
   const handleEditClick = () => {
-    navigate(`/banks/${id}/edit`);
+    setModalMode("edit");
+    setModalOpen(true);
   };
 
-  const handleDelete = async () => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete this bank account?"
-    );
-    if (!confirm || !id) return;
+  const handleDeleteClick = () => {
+    setModalMode("delete");
+    setModalOpen(true);
+  };
 
-    const token = localStorage.getItem(ACCESS_TOKEN);
-    if (!token) {
-      setError("Unauthorized: please log in.");
-      return;
-    }
-
-    try {
-      await axiosInstance.delete(`/bankaccount/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      navigate("/banks");
-    } catch (err) {
-      setError("Failed to delete bank account.");
-    }
+  const handleSave = (updatedBank: Bank) => {
+    setBank(updatedBank);
+    setModalOpen(false);
   };
 
   if (loading) return <p>Loading bank details...</p>;
@@ -77,6 +72,7 @@ const BankDetails = () => {
     <div className="page">
       <Sidebar />
       <div className="main-content">
+        {/* header dhe butonat */}
         <div className="header-top">
           <div
             className="icon-group"
@@ -100,7 +96,7 @@ const BankDetails = () => {
             </div>
             <div
               className="header-icon"
-              onClick={handleDelete}
+              onClick={handleDeleteClick}
               style={{ cursor: "pointer" }}
               aria-label="Delete bank"
             >
@@ -109,15 +105,41 @@ const BankDetails = () => {
           </div>
         </div>
 
-        <div className="bank-details">
+        {/* detajet e bankës */}
+        <div className="bankDetails">
           <h2>{bank.name}</h2>
-          <p>
-            <strong>Code:</strong> {bank.code}
-          </p>
-          <p>
-            <strong>Balance:</strong> ${bank.balance.toFixed(2)}
-          </p>
+          <p>{bank.code}</p>
+          <h3>${bank.balance.toFixed(2)}</h3>
         </div>
+
+        <EditBankModal
+          isOpen={modalOpen && modalMode === "edit"}
+          bank={bank}
+          onClose={() => setModalOpen(false)}
+          onSave={handleSave}
+        />
+
+        <DeleteBankModal
+          isOpen={modalOpen && modalMode === "delete"}
+          bank={bank}
+          onClose={() => setModalOpen(false)}
+          onConfirmDelete={async () => {
+            const token = localStorage.getItem(ACCESS_TOKEN);
+            if (!token || !id) {
+              setError("Unauthorized: please log in.");
+              return;
+            }
+            try {
+              await axiosInstance.delete(`/bankaccount/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+              });
+              setModalOpen(false);
+              navigate("/bank");
+            } catch {
+              setError("Failed to delete bank account.");
+            }
+          }}
+        />
       </div>
     </div>
   );

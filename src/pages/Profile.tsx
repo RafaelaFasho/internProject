@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
 import ProfileContent from "../components/ProfileContent";
 import Sidebar from "../components/Sidebar";
-import "../index.css";
+import "../styles/profile.css";
 import { ACCESS_TOKEN } from "../constants/constants";
 import axiosInstance from "../utils/axios";
-
-interface ProfileData {
-  username: string;
-  fullName: string;
-  email: string;
-  birthdate: string;
-  phone: string;
-  joinedDate: string;
-}
+import { ProfileData } from "../types/Profile";
 
 function Profile() {
   const [profile, setProfile] = useState<ProfileData | null>(null);

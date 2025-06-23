@@ -5,5 +5,6 @@ export interface Product {
   longDescription: string;
   categoryId: string;
   price: number;
-  ImageUpload: File | string;
+  imageUpload?: File;
+  imagePath?: string;
 }

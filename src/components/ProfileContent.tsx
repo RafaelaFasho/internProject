@@ -1,6 +1,6 @@
 import React from "react";
 import { User, LogOut } from "lucide-react";
-import "../index.css";
+import "../styles/profile.css";
 
 interface ProfileContentProps {
   fullName: string;

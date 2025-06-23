@@ -1,5 +1,5 @@
 import React from "react";
-import "../index.css";
+import "../styles/productModal.css";
 
 interface DeleteModalProps {
   isOpen: boolean;

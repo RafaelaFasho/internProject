@@ -3,7 +3,7 @@ import { TextField, Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import "../index.css";
+import "../styles/login.css";
 import solunaLogo from "../assets/solunaLogo.png";
 import axiosInstance from "../utils/axios";
 import { ACCESS_TOKEN } from "../constants/constants";

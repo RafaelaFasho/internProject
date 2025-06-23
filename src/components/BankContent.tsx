@@ -3,7 +3,7 @@ import axiosInstance from "../utils/axios";
 import { Bank } from "../types/Bank";
 import { Transaction } from "../types/Transactions";
 import { ACCESS_TOKEN } from "../constants/constants";
-import "../index.css";
+import "../styles/bank.css";
 import BankOrTransactionModal from "./createBankOrTransactionModal";
 import { Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";

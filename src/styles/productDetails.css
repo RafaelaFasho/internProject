@@ -1,0 +1,76 @@
+/* Product Details */
+.product-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 40px;
+  background-color: transparent;
+  box-sizing: border-box;
+}
+
+.image-container {
+  width: 434px;
+  height: 542px;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.details-container {
+  flex: 1 1 60%;
+  max-width: 600px;
+  color: #333;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.product-title {
+  width: 400px;
+  height: 28px;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 28px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.product-price {
+  width: 235px;
+  height: 14px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 14px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.product-description {
+  width: 660px;
+  height: 300px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #a9a9a9;
+  margin-bottom: 30px;
+}
+
+.buy-now-button {
+  width: 660px;
+  height: 46px;
+  border-radius: 8px;
+  padding: 12px 16px;
+  gap: 10px;
+  background-color: #7be4e8;
+  color: #161616;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+}
