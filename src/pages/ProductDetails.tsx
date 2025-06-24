@@ -237,7 +237,6 @@ function ProductDetails() {
             longDescription: product.longDescription || "",
             categoryId: product.categoryId,
             price: product.price,
-            // imageUpload: product.imageUpload, ❌ Hiqet!
           }}
           onSave={handleUpdateProduct}
         />
@@ -255,6 +254,7 @@ function ProductDetails() {
           isOpen={isChooseBankModalOpen}
           onClose={() => setIsChooseBankModalOpen(false)}
           onConfirm={handleConfirmBankAccount}
+          amount={product.price}
         />
       )}
     </>

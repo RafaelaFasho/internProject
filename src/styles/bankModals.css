@@ -183,3 +183,45 @@
   left: 24px;
   margin-top: 20px;
 }
+
+.bank-account-radio label {
+  display: block;
+  width: 345px;
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid gray;
+  padding: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  background-color: #3b3b3b;
+  transition: background-color 0.3s ease;
+}
+
+.bank-account-radio label:hover {
+  background-color: #7be4e866;
+}
+
+.bank-account-radio input[type="radio"] {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.payNow-button {
+  background-color: #7be4e8;
+  color: #000000;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  width: 345px;
+  height: 46px;
+  top: 551px;
+  left: 24px;
+  margin-top: 50px;
+}

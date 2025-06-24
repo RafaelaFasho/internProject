@@ -27,23 +27,23 @@ const ProfileContent: React.FC<ProfileContentProps> = ({
       <div className="profile-info">
         <div className="profile-row">
           <span className="label">Full Name</span>
-          <span>{fullName}</span>
+          <span className="label2">{fullName}</span>
         </div>
         <div className="profile-row">
           <span className="label">Email</span>
-          <span>{email}</span>
+          <span className="label2">{email}</span>
         </div>
         <div className="profile-row">
           <span className="label">Birthdate</span>
-          <span>{birthdate}</span>
+          <span className="label2">{birthdate}</span>
         </div>
         <div className="profile-row">
           <span className="label">Phone</span>
-          <span>{phone}</span>
+          <span className="label2">{phone}</span>
         </div>
         <div className="profile-row">
           <span className="label">Username</span>
-          <span>{username}</span>
+          <span className="label2">{username}</span>
         </div>
       </div>
       <button className="logout-button" onClick={onLogout}>

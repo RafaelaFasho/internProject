@@ -35,8 +35,7 @@
   padding: 16px;
   gap: 10px;
   background-color: #121212;
-  border: 1px;
-  border-color: #242424;
+  border: 1px solid #3b3b3b;
 }
 
 .profile-row {
@@ -53,13 +52,19 @@
   color: #777777;
 }
 
+.label2 {
+  font-weight: 400;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #ffffff;
+}
+
 .logout-button {
   width: 552px;
   height: 49px;
   background-color: #121212;
   color: #cf5254;
-  border: 1px;
-  border-color: #242424;
+  border: 1px solid #3b3b3b;
   padding: 16px 17px;
   border-radius: 8px;
   cursor: pointer;

@@ -70,8 +70,8 @@ const BankContent = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
       } else {
-        const { id, ...transactionPayload } = data; // <-- heq id këtu
-        console.log("🚀 Payload që po dërgohet:", transactionPayload);
+        const { id, ...transactionPayload } = data;
+        console.log("Payload që po dërgohet:", transactionPayload);
         await axiosInstance.post("/banktransaction", data, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -127,7 +127,7 @@ const BankContent = () => {
       ) : activeSection === "bankList" ? (
         <div className="bankListSection">
           <div className="bankTopRow">
-            <label>Bank Accounts</label>
+            <h2>Bank Accounts</h2>
             <button className="bankAddButton" onClick={handleAdd}>
               Add Bank
             </button>
@@ -150,7 +150,7 @@ const BankContent = () => {
       ) : (
         <div className="transactionsSection">
           <div className="bankTopRow">
-            <label>Transactions List</label>
+            <h2>Transactions List</h2>
             <button className="bankAddButton" onClick={handleAdd}>
               Add Transaction
             </button>

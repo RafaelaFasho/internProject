@@ -11,6 +11,7 @@
   background-color: #121212;
   color: #ffffff;
   margin-bottom: 30px;
+  margin-top: 20px;
 }
 
 .bankHeader button {
@@ -37,8 +38,16 @@
   width: 100%;
 }
 
+h2 {
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 14px;
+}
+
 .bankAddButton {
-  width: 150px;
+  width: 158px;
   height: 42px;
   border-radius: 10px;
   padding: 10px 16px;
@@ -57,13 +66,12 @@
 .bankGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 40px;
   margin-top: 1rem;
 }
 
 .bankCard {
-  border: 1px;
-  border-color: #3b3b3b;
+  border: 1px solid #3b3b3b;
   border-radius: 8px;
   padding: 24px;
   background-color: #121212;
@@ -119,7 +127,7 @@
   flex: 1;
   height: 52px;
   padding: 0 16px;
-  border: 1px solid #242424;
+  border: 1px solid #3b3b3b;
   border-radius: 8px;
   background-color: #121212;
   color: white;
@@ -162,10 +170,9 @@
   margin-top: 80px;
   margin-left: 40px;
   border-radius: 8px;
-  border: 1px;
   padding: 32px;
   gap: 10px;
-  border-color: #3b3b3b;
+  border: 1px solid #3b3b3b;
   background-color: #121212;
 }
 

@@ -18,14 +18,13 @@ const HomeContent = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loadingProducts, setLoadingProducts] = useState(false);
-  const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const fetchCategories = async () => {
     setLoading(true);
     try {
       const res = await axiosInstance.get("/category/get-all");
-
       const data = res.data;
 
       if (data?.resultData?.data && Array.isArray(data.resultData.data)) {
@@ -53,36 +52,40 @@ const HomeContent = () => {
     }
   };
 
-  const fetchProducts = async (categoryId: number | "all" | null) => {
+  const fetchProducts = async (
+    categoryId: number | "all" | null,
+    page: number
+  ) => {
     setLoadingProducts(true);
     setError(null);
-    setProducts([]);
-    setVisibleProducts([]);
-    setCurrentPage(1);
-
-    let url = "";
-    if (categoryId === "all" || categoryId === null) {
-      url = "/product/get-all?limit=1000";
-    } else {
-      url = `/product/${categoryId}/get-all?limit=1000`;
-    }
 
     try {
-      const response = await axiosInstance.get(url);
+      const params = new URLSearchParams();
+      params.append("PageNumber", page.toString());
+      params.append("PageSize", PRODUCTS_PER_PAGE.toString());
+
+      let url = "/product/get-all";
+      if (categoryId !== "all" && categoryId !== null) {
+        url = `/product/${categoryId}/get-all`;
+      }
+
+      const response = await axiosInstance.get(`${url}?${params.toString()}`);
       const data = response.data;
 
-      const allProducts = Array.isArray(data.resultData.data)
-        ? data.resultData.data
-        : [];
-
-      console.log("Fetched products count:", allProducts.length);
-      console.log(data.resultData.data);
-      setProducts(allProducts);
-      setVisibleProducts(allProducts.slice(0, PRODUCTS_PER_PAGE));
+      if (data?.resultData?.data && Array.isArray(data.resultData.data)) {
+        setProducts(data.resultData.data);
+        setCurrentPage(data.resultData.currentPage);
+        setTotalPages(data.resultData.totalPages);
+      } else {
+        setProducts([]);
+        setTotalPages(1);
+        setCurrentPage(1);
+      }
     } catch (err: any) {
       setError(
         err.response?.data?.message || err.message || "Failed to fetch products"
       );
+      setProducts([]);
     } finally {
       setLoadingProducts(false);
     }
@@ -93,68 +96,41 @@ const HomeContent = () => {
   }, []);
 
   useEffect(() => {
-    fetchProducts(selectedCategoryId);
-  }, [selectedCategoryId]);
-
-  const loadMoreProducts = () => {
-    const nextPage = currentPage + 1;
-    const startIndex = (nextPage - 1) * PRODUCTS_PER_PAGE;
-    const endIndex = startIndex + PRODUCTS_PER_PAGE;
-    setVisibleProducts((prev) => [
-      ...prev,
-      ...products.slice(startIndex, endIndex),
-    ]);
-    setCurrentPage(nextPage);
-  };
+    fetchProducts(selectedCategoryId, currentPage);
+  }, [selectedCategoryId, currentPage]);
 
   const handleAddCategory = async (code: string, description: string) => {
     try {
-      await axiosInstance.post("/category", {
-        code,
-        description,
-      });
+      await axiosInstance.post("/category", { code, description });
       alert("Category added successfully!");
       await fetchCategories();
     } catch (err: any) {
-      if (err.response?.status === 401) {
-        alert("Unauthorized: please log in again.");
-      } else {
-        alert(
-          `Error while creating the category: ${
-            err.response?.data?.message || "Unknown error"
-          }`
-        );
-      }
+      alert(
+        `Error while creating the category: ${
+          err.response?.data?.message || "Unknown error"
+        }`
+      );
       console.error(err);
     }
   };
-
   const handleEditCategory = async (
     id: number,
     code: string,
     description: string
   ) => {
     try {
-      await axiosInstance.put(`/category/${id}`, {
-        code,
-        description,
-      });
+      await axiosInstance.put(`/category/${id}`, { code, description });
       alert("Category updated successfully!");
       await fetchCategories();
     } catch (err: any) {
-      if (err.response?.status === 401) {
-        alert("Unauthorized: please log in again.");
-      } else {
-        alert(
-          `Error while updating the category: ${
-            err.response?.data?.message || "Unknown error"
-          }`
-        );
-      }
+      alert(
+        `Error while updating the category: ${
+          err.response?.data?.message || "Unknown error"
+        }`
+      );
       console.error(err);
     }
   };
-
   const handleDeleteCategory = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this category?"))
       return;
@@ -165,19 +141,14 @@ const HomeContent = () => {
       if (selectedCategoryId === id) setSelectedCategoryId("all");
       await fetchCategories();
     } catch (err: any) {
-      if (err.response?.status === 401) {
-        alert("Unauthorized: please log in again.");
-      } else {
-        alert(
-          `Error while deleting the category: ${
-            err.response?.data?.message || "Unknown error"
-          }`
-        );
-      }
+      alert(
+        `Error while deleting the category: ${
+          err.response?.data?.message || "Unknown error"
+        }`
+      );
       console.error(err);
     }
   };
-
   const onClickEditCategory = () => {
     if (selectedCategoryId === null || selectedCategoryId === "all") {
       alert("Please select a category to edit.");
@@ -190,6 +161,7 @@ const HomeContent = () => {
     }
     const newCode = prompt("Edit category code:", category.code);
     if (!newCode) return;
+
     const newDescription = prompt(
       "Edit category description:",
       category.description
@@ -198,16 +170,15 @@ const HomeContent = () => {
 
     handleEditCategory(selectedCategoryId, newCode, newDescription);
   };
-
   const onClickAddCategory = () => {
     const newCode = prompt("Enter new category code:");
     if (!newCode) return;
+
     const newDescription = prompt("Enter new category description:");
     if (!newDescription) return;
 
     handleAddCategory(newCode, newDescription);
   };
-
   const handleSaveProduct = async (updatedProduct: Product) => {
     console.log("Saving product", updatedProduct);
     setIsProductModalOpen(false);
@@ -223,6 +194,12 @@ const HomeContent = () => {
               className="header-icon"
               onClick={onClickEditCategory}
               title="Edit selected category"
+              style={{
+                cursor:
+                  selectedCategoryId === "all" || selectedCategoryId === null
+                    ? "not-allowed"
+                    : "pointer",
+              }}
             >
               <PenLine className="icon" />
             </div>
@@ -235,11 +212,14 @@ const HomeContent = () => {
             </div>
             <div
               className="header-icon"
-              onClick={() =>
-                selectedCategoryId !== null &&
-                selectedCategoryId !== "all" &&
-                handleDeleteCategory(selectedCategoryId)
-              }
+              onClick={() => {
+                if (
+                  selectedCategoryId !== null &&
+                  selectedCategoryId !== "all"
+                ) {
+                  handleDeleteCategory(selectedCategoryId);
+                }
+              }}
               title="Delete selected category"
               style={{
                 cursor:
@@ -267,11 +247,25 @@ const HomeContent = () => {
                 className={`category-button ${
                   selectedCategoryId === cat.id ? "selected" : ""
                 }`}
-                onClick={() => setSelectedCategoryId(cat.id)}
+                onClick={() => {
+                  setSelectedCategoryId(cat.id);
+                  setCurrentPage(1);
+                }}
               >
                 {cat.code}
               </button>
             ))}
+            <button
+              className={`category-button ${
+                selectedCategoryId === "all" ? "selected" : ""
+              }`}
+              onClick={() => {
+                setSelectedCategoryId("all");
+                setCurrentPage(1);
+              }}
+            >
+              All
+            </button>
           </div>
         )}
 
@@ -298,27 +292,21 @@ const HomeContent = () => {
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {loadingProducts && <p>Loading products...</p>}
-        {!loadingProducts && visibleProducts.length === 0 && (
-          <p>No products found.</p>
-        )}
+
+        {!loadingProducts && products.length === 0 && <p>No products found.</p>}
 
         <div className="product-grid">
-          {visibleProducts.map((product) => (
+          {products.map((product) => (
             <div key={product.id} className="product-card">
               <Link to={`/product/${product.id}`}>
                 <img
                   src={
-                    typeof product.imageUpload === "string" &&
-                    typeof product.imagePath === "string" &&
-                    product.imagePath.trim() !== ""
-                      ? product.imageUpload
-                      : product.imagePath && product.imagePath.trim() !== ""
+                    product.imagePath && product.imagePath.trim() !== ""
                       ? product.imagePath
                       : "/default.jpg"
                   }
                   alt={product.name}
                 />
-
                 <label>{product.name}</label>
                 <p>{product.price} €</p>
               </Link>
@@ -326,9 +314,28 @@ const HomeContent = () => {
           ))}
         </div>
 
-        {visibleProducts.length < products.length && (
-          <div className="load-more-container">
-            <button onClick={loadMoreProducts}>Load More</button>
+        {totalPages > 1 && (
+          <div className="pagination" style={{ marginTop: "20px" }}>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                className={currentPage === index + 1 ? "active" : ""}
+                onClick={() => setCurrentPage(index + 1)}
+                style={{
+                  marginRight: "5px",
+                  marginBottom: "8px",
+                  padding: "6px 12px",
+                  cursor: "pointer",
+                  backgroundColor:
+                    currentPage === index + 1 ? "#7be4e8" : "#242424",
+                  color: currentPage === index + 1 ? "#242424" : "#fff",
+                  border: "none",
+                  borderRadius: "4px",
+                }}
+              >
+                {index + 1}
+              </button>
+            ))}
           </div>
         )}
       </div>
