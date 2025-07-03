@@ -1,25 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Upload } from "lucide-react";
-import { Product } from "../types/Product";
-import { Category } from "../types/Category";
+import { ProductModalProps, FormDataState } from "../types/Product";
 import axiosInstance from "../utils/axios";
 import "../styles/productModal.css";
-
-interface ProductModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  categories: Category[];
-  existingProduct?: Product;
-  onSave: (updatedProduct: Product) => Promise<void>;
-}
-
-interface FormDataState {
-  name: string;
-  shortDescription: string;
-  longDescription: string;
-  categoryId: string;
-  price: string;
-}
 
 const ProductModal = ({
   isOpen,
@@ -28,7 +11,6 @@ const ProductModal = ({
   existingProduct,
   onSave,
 }: ProductModalProps) => {
-  // Form fields without ImageUpload since it's File type in Product
   const [formData, setFormData] = useState<FormDataState>({
     name: "",
     shortDescription: "",

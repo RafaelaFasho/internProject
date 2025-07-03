@@ -72,7 +72,6 @@ const BankDetails = () => {
     <div className="page">
       <Sidebar />
       <div className="main-content">
-        {/* header dhe butonat */}
         <div className="header-top">
           <div
             className="icon-group"
@@ -105,7 +104,6 @@ const BankDetails = () => {
           </div>
         </div>
 
-        {/* detajet e bankës */}
         <div className="bankDetails">
           <h2>{bank.name}</h2>
           <p>{bank.code}</p>

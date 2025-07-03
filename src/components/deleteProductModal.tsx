@@ -1,13 +1,6 @@
 import React from "react";
 import "../styles/productModal.css";
-
-interface DeleteModalProps {
-  isOpen: boolean;
-  itemName: string;
-  onCancel: () => void;
-  onConfirm: () => void;
-  saving?: boolean;
-}
+import { DeleteModalProps } from "../types/Product";
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
   isOpen,

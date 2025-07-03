@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { PenLine, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProductModal from "./createOrEditModal";
-import { Product } from "../types/Product";
+import { Product, Category } from "../types/Product";
 import axiosInstance from "../utils/axios";
-import { Category } from "../types/Category";
 
-const PRODUCTS_PER_PAGE = 10;
+const PRODUCTS_PER_PAGE = 12;
 
 const HomeContent = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -241,6 +240,17 @@ const HomeContent = () => {
           <div>Loading categories...</div>
         ) : (
           <div className="category-buttons">
+            <button
+              className={`category-button ${
+                selectedCategoryId === "all" ? "selected" : ""
+              }`}
+              onClick={() => {
+                setSelectedCategoryId("all");
+                setCurrentPage(1);
+              }}
+            >
+              All
+            </button>
             {categories.map((cat) => (
               <button
                 key={cat.id}
@@ -255,17 +265,6 @@ const HomeContent = () => {
                 {cat.code}
               </button>
             ))}
-            <button
-              className={`category-button ${
-                selectedCategoryId === "all" ? "selected" : ""
-              }`}
-              onClick={() => {
-                setSelectedCategoryId("all");
-                setCurrentPage(1);
-              }}
-            >
-              All
-            </button>
           </div>
         )}
 
@@ -316,26 +315,44 @@ const HomeContent = () => {
 
         {totalPages > 1 && (
           <div className="pagination" style={{ marginTop: "20px" }}>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index}
-                className={currentPage === index + 1 ? "active" : ""}
-                onClick={() => setCurrentPage(index + 1)}
-                style={{
-                  marginRight: "5px",
-                  marginBottom: "8px",
-                  padding: "6px 12px",
-                  cursor: "pointer",
-                  backgroundColor:
-                    currentPage === index + 1 ? "#7be4e8" : "#242424",
-                  color: currentPage === index + 1 ? "#242424" : "#fff",
-                  border: "none",
-                  borderRadius: "4px",
-                }}
-              >
-                {index + 1}
-              </button>
-            ))}
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              style={{
+                marginRight: "10px",
+                padding: "6px 12px",
+                cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                backgroundColor: "#242424",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                opacity: currentPage === 1 ? 0.5 : 1,
+              }}
+            >
+              ←
+            </button>
+
+            <span style={{ margin: "0 10px", color: "#fff" }}>
+              {currentPage}
+            </span>
+
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+              style={{
+                padding: "6px 12px",
+                cursor: currentPage === totalPages ? "not-allowed" : "pointer",
+                backgroundColor: "#242424",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                opacity: currentPage === totalPages ? 0.5 : 1,
+              }}
+            >
+              →
+            </button>
           </div>
         )}
       </div>

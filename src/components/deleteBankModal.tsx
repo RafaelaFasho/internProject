@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import { Bank } from "../types/Bank";
+import { DeleteBankModalProps } from "../types/Bank";
 import "../styles/bankModals.css";
-
-interface DeleteBankModalProps {
-  isOpen: boolean;
-  bank: Bank | null;
-  onClose: () => void;
-  onConfirmDelete: () => void;
-}
 
 const DeleteBankModal: React.FC<DeleteBankModalProps> = ({
   isOpen,

@@ -178,3 +178,84 @@
   color: #7be4e8;
   text-decoration: none;
 }
+
+@media (max-width: 1180px) {
+  .logo-container {
+    position: absolute;
+    top: 51px;
+    left: 20px;
+  }
+
+  .soluna-logo {
+    width: 222.51px;
+    height: 58.05px;
+  }
+}
+
+@media (max-width: 1179px) {
+  .register-box {
+    width: 90%;
+    height: auto;
+    padding: 24px;
+  }
+
+  .register-form,
+  .register-fields-form,
+  .register-fields,
+  .register-title-content,
+  .register-title,
+  .register-subtitle,
+  .register-button,
+  .register-footer {
+    width: 100%;
+  }
+
+  .register-form {
+    height: auto;
+    gap: 24px;
+  }
+
+  .register-fields-form {
+    height: auto;
+    gap: 24px;
+  }
+
+  .register-fields {
+    height: auto;
+  }
+
+  .register-textfield .MuiOutlinedInput-root {
+    width: 100%;
+  }
+
+  .logo-container {
+    position: static;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .soluna-logo {
+    width: 180px;
+    height: auto;
+  }
+
+  .register-page {
+    padding: 40px 16px;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-title {
+    font-size: 20px;
+  }
+
+  .register-subtitle {
+    font-size: 13px;
+  }
+
+  .register-button {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+}

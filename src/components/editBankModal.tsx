@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../utils/axios";
-import { Bank } from "../types/Bank";
+import { EditBankModalProps } from "../types/Bank";
 import { ACCESS_TOKEN } from "../constants/constants";
 import "../styles/bankModals.css";
-
-interface EditBankModalProps {
-  isOpen: boolean;
-  bank: Bank | null;
-  onClose: () => void;
-  onSave: (updatedBank: Bank) => void;
-}
 
 const EditBankModal: React.FC<EditBankModalProps> = ({
   isOpen,

@@ -2,23 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ACCESS_TOKEN } from "../constants/constants";
 import "../styles/bankModals.css";
 import axiosInstance from "../utils/axios";
-
-interface BankAccount {
-  id: number;
-  code: string;
-  name: string;
-  currencyId: number;
-  balance: number;
-  clientId: number;
-  isActive: boolean;
-}
-
-interface ChooseBankModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: (bankAccountId: number) => void;
-  amount: number;
-}
+import { Bank, ChooseBankModalProps } from "../types/Bank";
 
 const ChooseBankModal: React.FC<ChooseBankModalProps> = ({
   isOpen,
@@ -26,7 +10,7 @@ const ChooseBankModal: React.FC<ChooseBankModalProps> = ({
   onConfirm,
   amount,
 }) => {
-  const [bankAccounts, setBankAccounts] = useState<BankAccount[]>([]);
+  const [bankAccounts, setBankAccounts] = useState<Bank[]>([]);
   const [selectedAccountId, setSelectedAccountId] = useState<number | null>(
     null
   );

@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { useParams, useNavigate } from "react-router-dom";
-import { Product } from "../types/Product";
+import { Product, CategoriesResponse } from "../types/Product";
 import { ArrowLeft, PenLine, Trash2 } from "lucide-react";
 import "../index.css";
 import ProductModal from "../components/createOrEditModal";
 import DeleteModal from "../components/deleteProductModal";
 import ChooseBankModal from "../components/chooseBankModal";
 import axiosInstance from "../utils/axios";
-import { CategoriesResponse } from "../types/Category";
 import "../styles/productDetails.css";
 
 function ProductDetails() {

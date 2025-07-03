@@ -1,6 +1,7 @@
 /* Product Details */
 .product-content {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   align-items: flex-start;
   gap: 40px;
@@ -10,8 +11,10 @@
 }
 
 .image-container {
-  width: 434px;
-  height: 542px;
+  flex: 1 1 100%;
+  max-width: 434px;
+  width: 100%;
+  height: auto;
 }
 
 .product-image {
@@ -22,55 +25,79 @@
 }
 
 .details-container {
-  flex: 1 1 60%;
+  flex: 1 1 100%;
   max-width: 600px;
-  color: #333;
+  color: #ccc;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Responsivitet për çdo tekst dhe element */
 .product-title {
-  width: 400px;
-  height: 28px;
+  width: 100%;
   font-family: "Inter", sans-serif;
   font-weight: 600;
-  font-size: 28px;
-  line-height: 28px;
+  font-size: 24px;
   color: #ffffff;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .product-price {
-  width: 235px;
-  height: 14px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 14px;
+  width: 100%;
+  font-size: 18px;
   color: #ffffff;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .product-description {
-  width: 660px;
-  height: 300px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
+  width: 100%;
   font-size: 14px;
   line-height: 20px;
   color: #a9a9a9;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
 }
 
 .buy-now-button {
-  width: 660px;
-  height: 46px;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
   border-radius: 8px;
   padding: 12px 16px;
-  gap: 10px;
   background-color: #7be4e8;
   color: #161616;
   font-family: "Inter", sans-serif;
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;
+  cursor: pointer;
+}
+
+/* Media query për pajisje të vogla */
+@media (max-width: 768px) {
+  .product-content {
+    flex-direction: column;
+    padding: 20px;
+    gap: 24px;
+  }
+
+  .image-container,
+  .details-container {
+    max-width: 100%;
+  }
+
+  .product-title {
+    font-size: 22px;
+  }
+
+  .product-price {
+    font-size: 16px;
+  }
+
+  .product-description {
+    font-size: 13px;
+  }
+
+  .buy-now-button {
+    font-size: 14px;
+    padding: 12px;
+  }
 }

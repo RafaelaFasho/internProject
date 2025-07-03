@@ -1,15 +1,7 @@
 import React from "react";
 import { User, LogOut } from "lucide-react";
 import "../styles/profile.css";
-
-interface ProfileContentProps {
-  fullName: string;
-  email: string;
-  birthdate: string;
-  phone: string;
-  username: string;
-  onLogout: () => void;
-}
+import { ProfileContentProps } from "../types/Profile";
 
 const ProfileContent: React.FC<ProfileContentProps> = ({
   fullName,

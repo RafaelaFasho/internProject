@@ -1,24 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { Bank } from "../types/Bank";
-import { Transaction } from "../types/Transactions";
+import { Bank, Transaction, ModalProps, Currency } from "../types/Bank";
 import axiosInstance from "../utils/axios";
 import "../styles/bankModals.css";
-
-interface Currency {
-  id: number;
-  code: string;
-  description: string;
-}
-
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (data: Bank | Transaction) => void;
-  mode: "bank" | "transaction";
-  bankOptions?: Bank[];
-  saving?: boolean;
-}
 
 const BankOrTransactionModal: React.FC<ModalProps> = ({
   isOpen,

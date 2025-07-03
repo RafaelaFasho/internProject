@@ -277,3 +277,73 @@
   border: none;
   cursor: pointer;
 }
+
+@media (max-width: 1240px) {
+  .createOrEditModal {
+    width: 90%;
+    max-width: 500px;
+    height: auto;
+    overflow-y: auto;
+    max-height: 90vh;
+    padding: 16px;
+  }
+
+  .modal-buttons button {
+    width: 100%;
+    height: auto;
+    padding: 12px;
+  }
+
+  .delete-modal {
+    width: 90%;
+    max-width: 350px;
+    height: auto;
+    padding: 16px;
+  }
+
+  .delete-button,
+  .cancel-button {
+    width: 100% !important;
+    padding: 12px;
+  }
+
+  .delete-modal-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .upload-box {
+    padding: 10px 12px;
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .modal-header h2 {
+    font-size: 20px;
+  }
+
+  .modal-header p {
+    font-size: 13px;
+  }
+
+  .modal-form input,
+  .modal-form select,
+  .modal-form textarea {
+    height: 44px;
+    font-size: 13px;
+  }
+
+  .modal-form textarea {
+    height: auto;
+  }
+
+  .upload-icon {
+    font-size: 20px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .preview {
+    max-height: 150px;
+  }
+}

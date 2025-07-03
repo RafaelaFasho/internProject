@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../utils/axios";
-import { Bank } from "../types/Bank";
-import { Transaction } from "../types/Transactions";
+import { Bank, Transaction } from "../types/Bank";
 import { ACCESS_TOKEN } from "../constants/constants";
 import "../styles/bank.css";
 import BankOrTransactionModal from "./createBankOrTransactionModal";
