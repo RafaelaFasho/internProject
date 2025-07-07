@@ -1,7 +1,9 @@
+/* Globalized Styles with CSS Variables */
+
 .page {
   min-height: 100vh;
   width: 100%;
-  background-color: #2b2a2a;
+  background-color: var(--color-bg-main);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,7 +19,6 @@
   height: 100vh;
 }
 
-/* Header */
 .header-container {
   z-index: 1000;
   display: flex;
@@ -28,27 +29,23 @@
   margin-top: 8px;
 }
 
-.header-top {
+.header-top,
+.header-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 44px;
   width: 100%;
+  padding: 20px 0 0 0;
 }
 
-.header-top label {
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 22px;
+.header-top label,
+.header-bottom label {
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-xxl);
   line-height: 14px;
-  color: #ffffff;
-}
-
-.header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0px 0 0px;
+  color: var(--color-text-light);
 }
 
 .icon-group {
@@ -56,14 +53,14 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  color: white;
+  color: var(--color-text-light);
 }
 
 .header-icon {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: #242424;
+  background-color: var(--color-bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -77,7 +74,7 @@
 .header-icon .icon {
   width: 20px;
   height: 20px;
-  color: white;
+  color: var(--color-text-light);
 }
 
 .category-buttons {
@@ -91,56 +88,38 @@
 .category-button {
   width: 80px;
   height: 38px;
-  border-radius: 70px;
+  border-radius: var(--border-radius-pill);
   padding: 8px 12px;
-  background-color: #242424;
-  color: #ffffff;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-light);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #3b3b3b;
+  border: 1px solid var(--color-border);
   cursor: pointer;
 }
 
 .category-button.selected {
-  background-color: #7be4e8;
-  color: #242424;
-}
-
-.header-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 42px;
-  width: 100%;
-  margin-top: 5px;
-}
-
-.header-bottom label {
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 22px;
-  line-height: 14px;
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: var(--color-bg-secondary);
 }
 
 .add-product-button {
-  background-color: #7be4e8 !important;
-  color: #000 !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-text-dark) !important;
   width: 113px;
   height: 42px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   padding: 10px 16px;
   border: none;
   cursor: pointer;
 }
 
-/* Product List*/
 .product-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 17px;
-  margin-top: 10px;
+  margin-top: 15px;
   margin-bottom: 15px;
   width: 100%;
 }
@@ -168,18 +147,18 @@
   display: block;
   width: 210px !important;
   height: 200px;
-  border-radius: 7.9px;
+  border-radius: var(--border-radius-sm);
   object-fit: cover;
 }
 
 .product-card label {
   width: 158px;
   height: 14px;
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semibold);
   font-size: 13.82px;
   line-height: 13.82px;
-  color: #ffffff;
+  color: var(--color-text-light);
   margin: 4px 0 2px;
   cursor: pointer;
 }
@@ -187,26 +166,26 @@
 .product-card p {
   width: 158px;
   height: 14px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
   font-size: 11.85px;
   line-height: 13.82px;
-  color: #ffffff;
+  color: var(--color-text-light);
   margin-bottom: 0;
 }
 
 @media (max-width: 490px) {
   .main-content {
     width: 100%;
-    margin-left: 0px;
+    margin-left: 0;
   }
 
   .product-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
+
   .product-card img {
-    display: block;
     margin: 0 auto;
     max-width: 100%;
     height: auto;
@@ -214,8 +193,6 @@
   }
 
   .category-buttons {
-    display: flex;
-    flex-wrap: wrap;
     gap: 10px;
     justify-content: flex-start;
     margin-top: 40px;

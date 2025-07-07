@@ -1,11 +1,11 @@
-/*Profile*/
+/* Profile */
 .profile-container {
   width: 584px;
   height: 596px;
   margin: 0 auto;
   padding: 32px 16px;
   background-color: transparent;
-  border-radius: 15px;
+  border-radius: var(--border-radius-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,23 +19,23 @@
 }
 
 .profile-avatar {
-  background-color: #121212;
+  background-color: var(--color-bg-dark);
   padding: 20px;
   border-radius: 130px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #3b3b3b;
+  color: var(--color-border);
 }
 
 .profile-info {
   width: 552px;
   height: 248px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   padding: 16px;
   gap: 10px;
-  background-color: #121212;
-  border: 1px solid #3b3b3b;
+  background-color: var(--color-bg-dark);
+  border: 1px solid var(--color-border);
 }
 
 .profile-row {
@@ -46,36 +46,40 @@
 }
 
 .label {
-  font-weight: 400;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  color: #777777;
+  font-weight: var(--font-weight-regular);
+  font-family: var(--font-family-main);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted-dark);
 }
 
 .label2 {
-  font-weight: 400;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  color: #ffffff;
+  font-weight: var(--font-weight-regular);
+  font-family: var(--font-family-main);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-light);
 }
 
 .logout-button {
   width: 552px;
   height: 49px;
-  background-color: #121212;
-  color: #cf5254;
-  border: 1px solid #3b3b3b;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-danger-alt);
+  border: 1px solid var(--color-border);
   padding: 16px 17px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   cursor: pointer;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: var(--color-border);
 }
 
 @media (max-width: 768px) {
@@ -109,17 +113,17 @@
     width: 100%;
     height: auto;
     padding: 12px;
-    font-size: 14px;
+    font-size: var(--font-size-sm);
   }
 
   .profile-avatar {
     padding: 16px;
     border-radius: 100px;
-    font-size: 24px;
+    font-size: var(--font-size-xl);
   }
 
   .label,
   .label2 {
-    font-size: 13px;
+    font-size: var(--font-size-xs);
   }
 }

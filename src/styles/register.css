@@ -2,7 +2,7 @@
 
 .register-page {
   min-height: 100vh;
-  background-color: #2b2a2a;
+  background-color: var(--color-bg-main);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,9 +22,9 @@
 }
 
 .register-box {
-  background-color: #121212;
+  background-color: var(--color-bg-dark);
   padding: 32px;
-  border-radius: 16px;
+  border-radius: var(--border-radius-lg);
   gap: 10px;
   width: 577px;
   height: 980px;
@@ -51,22 +51,22 @@
 }
 
 .register-title {
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 24px;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-xxxl);
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-light);
   width: 513px;
   height: 24px;
   margin: 0;
 }
 
 .register-subtitle {
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
   line-height: 22px;
-  color: #a9a9a9;
+  color: var(--color-text-muted);
   width: 430px;
   height: 22px;
   margin: 0;
@@ -90,10 +90,10 @@
 }
 
 .register-fields label {
-  color: #ffffff;
-  font-family: "Inter", sans-serif;
-  font-weight: 500;
-  font-size: 16px;
+  color: var(--color-text-light);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-md);
   line-height: 22px;
   width: 513px;
   height: 20px;
@@ -101,7 +101,7 @@
 }
 
 .register-textfield .MuiOutlinedInput-root {
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   border: 1px;
   gap: 10px;
   padding-top: 12px;
@@ -113,51 +113,51 @@
 }
 
 .text-field input {
-  color: #a9a9a9;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
+  color: var(--color-text-muted);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
   line-height: 22px;
 }
 
 .text-field input::placeholder {
-  color: #a9a9a9;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
+  color: var(--color-text-muted);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
   line-height: 22px;
 }
 
 .text-field .MuiOutlinedInput-notchedOutline {
-  border-color: #3b3b3b;
+  border-color: var(--color-border);
 }
 
 .country-code .MuiSelect-select {
-  color: #3b3b3b;
+  color: var(--color-border);
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
 .MuiMenu-paper {
-  background-color: #121212 !important;
-  color: #3b3b3b !important;
-  border-radius: 8px;
+  background-color: var(--color-bg-dark) !important;
+  color: var(--color-border) !important;
+  border-radius: var(--border-radius-md);
   box-shadow: none;
 }
 
 .register-button {
-  background-color: #7be4e8 !important;
-  color: #161616 !important;
-  font-weight: 600;
-  font-size: 14px;
-  font-family: "Inter", sans-serif;
+  background-color: var(--color-primary) !important;
+  color: var(--color-text-dark) !important;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family-main);
   line-height: 22px;
   padding-top: 12px;
   padding-right: 16px;
   padding-bottom: 12px;
   padding-left: 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   text-transform: none;
   width: 513px;
   height: 46px;
@@ -165,17 +165,17 @@
 }
 
 .register-footer {
-  color: #a9a9a9;
+  color: var(--color-text-muted);
   text-align: center;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
   margin: 0;
   height: 22px;
   width: 513px;
 }
 
 .register-footer a {
-  color: #7be4e8;
+  color: var(--color-primary);
   text-decoration: none;
 }
 
@@ -251,11 +251,11 @@
   }
 
   .register-subtitle {
-    font-size: 13px;
+    font-size: var(--font-size-xs);
   }
 
   .register-button {
-    font-size: 13px;
+    font-size: var(--font-size-xs);
     padding: 10px 14px;
   }
 }

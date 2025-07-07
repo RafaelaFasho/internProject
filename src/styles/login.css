@@ -1,9 +1,8 @@
 /* Login Page */
-
 .login-fields-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
 }
 
 .login-fields-form p {
@@ -13,7 +12,7 @@
 .page {
   min-height: 100vh;
   width: 100%;
-  background-color: #2b2a2a;
+  background-color: var(--color-bg-main);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,9 +21,9 @@
 }
 
 .login-box {
-  background-color: #121212;
-  padding: 32px;
-  border-radius: 16px;
+  background-color: var(--color-bg-dark);
+  padding: 24px;
+  border-radius: var(--border-radius-lg);
   gap: 10px;
   width: 577px;
   height: 454px;
@@ -36,10 +35,11 @@
 .login-form {
   width: 513px;
   height: 390px;
-  gap: 32px;
+  gap: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-left: 8px;
 }
 
 .login-title-content {
@@ -51,22 +51,22 @@
 }
 
 .login-title {
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 24px;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-xxxl);
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-light);
   width: 358px;
   height: 24px;
   margin: 0;
 }
 
 .login-subtitle {
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
   line-height: 22px;
-  color: #a9a9a9;
+  color: var(--color-text-muted);
   width: 380px;
   height: 22px;
   margin: 0;
@@ -90,59 +90,53 @@
 }
 
 .login-fields label {
-  color: #ffffff;
-  font-family: "Inter", sans-serif;
-  font-weight: 500;
-  font-size: 16px;
+  color: var(--color-text-light);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-md);
   line-height: 22px;
   width: 513px;
   height: 22px;
 }
 
 .login-textfield .MuiOutlinedInput-root {
-  border-radius: 8px;
-  border: 1px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-border);
   gap: 10px;
-  padding-top: 12px;
-  padding-right: 16px;
-  padding-bottom: 12px;
-  padding-left: 16px;
+  padding: 12px 16px;
   width: 513px;
   height: 52px;
 }
 
 .text-field input {
-  color: #a9a9a9;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
+  color: var(--color-text-muted);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
   line-height: 22px;
 }
 
 .text-field input::placeholder {
-  color: #a9a9a9;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
+  color: var(--color-text-muted);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
   line-height: 22px;
 }
 
 .text-field .MuiOutlinedInput-notchedOutline {
-  border-color: #3b3b3b;
+  border-color: var(--color-border);
 }
 
 .login-button {
-  background-color: #7be4e8 !important;
-  color: #161616 !important;
-  font-weight: 600;
-  font-size: 14px;
-  font-family: "Inter", sans-serif;
+  background-color: var(--color-primary) !important;
+  color: var(--color-text-dark) !important;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family-main);
   line-height: 22px;
-  padding-top: 12px;
-  padding-right: 16px;
-  padding-bottom: 12px;
-  padding-left: 16px;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border-radius: var(--border-radius-md);
   text-transform: none;
   width: 513px;
   height: 46px;
@@ -150,18 +144,138 @@
 }
 
 .login-footer {
-  color: #a9a9a9;
+  color: var(--color-text-muted);
   text-align: center;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
   height: 22px;
   width: 513px;
-  margin-top: 55px;
+  margin-top: 30px;
 }
 
 .login-footer a {
-  color: #7be4e8;
+  color: var(--color-primary);
   text-decoration: none;
+}
+
+/* Media Queries for Login Page */
+@media (max-width: 1180px) {
+  .logo-container {
+    position: absolute;
+    top: 51px;
+    left: 20px;
+  }
+
+  .soluna-logo {
+    width: 222.51px;
+    height: 58.05px;
+  }
+}
+
+@media (max-width: 1179px) {
+  .login-box {
+    width: 90%;
+    height: auto;
+    padding: var(--spacing-xxl);
+  }
+
+  .login-form,
+  .login-fields-form,
+  .login-fields,
+  .login-title-content,
+  .login-title,
+  .login-subtitle,
+  .login-button,
+  .login-footer {
+    width: 100%;
+  }
+
+  .login-form {
+    height: auto;
+    gap: 24px;
+  }
+
+  .login-fields-form {
+    height: auto;
+    gap: 24px;
+  }
+
+  .login-fields {
+    height: auto;
+  }
+
+  .login-textfield .MuiOutlinedInput-root {
+    width: 100%;
+  }
+
+  .logo-container {
+    position: static;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .soluna-logo {
+    width: 180px;
+    height: auto;
+  }
+
+  .page {
+    padding: 24px 16px;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-bg-main);
+  }
+}
+
+@media (max-width: 583px) {
+  .page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 12px;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: var(--color-bg-main);
+  }
+
+  .logo-container {
+    position: static;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .soluna-logo {
+    width: 160px;
+    height: auto;
+  }
+
+  .login-box {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+  }
+
+  .login-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .login-subtitle {
+    font-size: var(--font-size-xs);
+  }
+
+  .login-button {
+    font-size: var(--font-size-xs);
+    padding: 10px 12px;
+    height: auto;
+  }
+
+  .login-footer {
+    font-size: var(--font-size-xs);
+    margin-top: 20px;
+  }
 }
 
 @media (max-width: 1180px) {

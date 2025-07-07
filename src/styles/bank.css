@@ -1,6 +1,7 @@
 body {
   overflow-y: auto;
 }
+
 /*Bank Content */
 
 .bankHeader {
@@ -9,10 +10,10 @@ body {
   flex-direction: row;
   width: 358px;
   height: 50px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   padding: 4px;
-  background-color: #121212;
-  color: #ffffff;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
   margin-bottom: 30px;
   margin-top: 20px;
 }
@@ -20,17 +21,17 @@ body {
 .bankHeader button {
   flex: 1;
   height: 42px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   padding: 10px;
   cursor: pointer;
-  background-color: #121212;
-  color: #ffffff;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
   border: none;
 }
 
 .bankHeader button.active {
-  background-color: #ffffff;
-  color: #121212;
+  background-color: var(--color-text-light);
+  color: var(--color-bg-dark);
 }
 
 .bankTopRow {
@@ -42,23 +43,23 @@ body {
 }
 
 h2 {
-  color: #ffffff;
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 22px;
+  color: var(--color-text-light);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-xxl);
   line-height: 14px;
 }
 
 .bankAddButton {
   width: 158px;
   height: 42px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-lg);
   padding: 10px 16px;
-  background-color: #7be4e8;
-  color: #171717;
-  font-family: "Inter", sans-serif;
-  font-weight: 500;
-  font-size: 14px;
+  background-color: var(--color-primary);
+  color: var(--color-bg-secondary);
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
   line-height: 16px;
   letter-spacing: -2%;
   cursor: pointer;
@@ -74,48 +75,44 @@ h2 {
 }
 
 .bankCard {
-  border: 1px solid #3b3b3b;
-  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
   padding: 24px;
-  background-color: #121212;
+  background-color: var(--color-bg-dark);
   width: 660px;
   height: 250px;
-  top: 216px;
-  left: 286px;
   gap: 10px;
 }
 
 .bankCard h3 {
   width: 506px;
-  height: 14px;
-  font-family: "Inter", sans-serif;
-  font-weight: 500;
-  font-size: 16px;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-md);
   line-height: 14px;
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 
 .bankCard p {
   width: 506px;
-  height: 14px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 12px;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-xxs);
   line-height: 14px;
-  color: #a9a9a9;
+  color: var(--color-text-muted);
   margin-top: 10px;
 }
 
 .bankCard h2 {
   width: 506px;
-  height: 14px;
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semibold);
   font-size: 28px;
   line-height: 28px;
-  color: #ffffff;
+  color: var(--color-text-light);
   margin-top: 120px;
 }
+
 .transactionWrapper {
   display: flex;
   align-items: center;
@@ -130,10 +127,10 @@ h2 {
   flex: 1;
   height: 52px;
   padding: 0 16px;
-  border: 1px solid #3b3b3b;
-  border-radius: 8px;
-  background-color: #121212;
-  color: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
 }
 
 .transactionDescription {
@@ -144,26 +141,26 @@ h2 {
 .transactionAmount {
   text-align: right;
   min-width: 80px;
-  color: #a9a9a9;
+  color: var(--color-text-muted);
 }
 
 .delete-button {
-  background: #121212;
+  background: var(--color-bg-dark);
   border: 1px solid #242424;
-  color: #ffffff;
+  color: var(--color-text-light);
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 50.22px;
   height: 52px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   transition: background 0.2s ease, color 0.2s ease;
 }
 
 .delete-button:hover {
   background: #1e1e1e;
-  color: #dc2626;
+  color: var(--color-text-danger);
 }
 
 /*  Bank Details*/
@@ -172,41 +169,41 @@ h2 {
   height: 455px;
   margin-top: 80px;
   margin-left: 40px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   padding: 32px;
   gap: 10px;
-  border: 1px solid #3b3b3b;
-  background-color: #121212;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-dark);
 }
 
 .bankDetails h2 {
   width: 1060px;
   height: 24px;
-  font-family: "Inter", sans-serif;
-  font-weight: 500;
-  font-size: 24px;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xxxl);
   line-height: 24px;
 }
 
 .bankDetails p {
   width: 1060px;
   height: 16px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 16px;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-md);
   line-height: 16px;
-  color: #a9a9a9;
+  color: var(--color-text-muted);
   margin-top: 10px;
 }
 
 .bankDetails h3 {
   width: 136px;
   height: 32px;
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semibold);
   font-size: 32px;
   line-height: 32px;
-  color: #ffffff;
+  color: var(--color-text-light);
   margin-top: 300px;
 }
 
@@ -284,11 +281,11 @@ h2 {
   .bankDetails h2,
   .bankDetails p {
     width: 100%;
-    font-size: 18px;
+    font-size: var(--font-size-xl);
   }
 
   .bankDetails h3 {
-    font-size: 24px;
+    font-size: var(--font-size-xl);
     margin-top: 20px;
     width: 100%;
   }

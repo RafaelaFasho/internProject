@@ -1,4 +1,4 @@
-/*Choose Bank Modal */
+/* Choose Bank Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -14,11 +14,11 @@
 }
 
 .modal {
-  background-color: #171717;
-  color: #ffffff;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-light);
   width: 390px;
   height: 312px;
-  border-radius: 15px;
+  border-radius: var(--border-radius-lg);
   padding: 24px;
   box-sizing: border-box;
   overflow-y: auto;
@@ -37,8 +37,8 @@
   border-radius: 50%;
   width: 32px;
   height: 32px;
-  color: #ffffff;
-  font-size: 16px;
+  color: var(--color-text-light);
+  font-size: var(--font-size-md);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -46,7 +46,7 @@
 }
 
 .close-button:hover {
-  background-color: #3b3b3b;
+  background-color: var(--color-border);
 }
 
 .modal-header {
@@ -57,19 +57,19 @@
 }
 
 .modal-header h2 {
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 24px;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-xxxl);
   margin: 0;
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 
 .modal-header p {
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
+  font-family: var(--font-family-main);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
   line-height: 22px;
-  color: #a9a9a9;
+  color: var(--color-text-muted);
   margin: 4px 0 0 0;
 }
 
@@ -80,15 +80,16 @@
 }
 
 .modal-form input,
-.modal-form select {
+.modal-form select,
+.modal-form textarea {
   width: 100%;
   height: 48px;
   padding: 10px;
-  border-radius: 8px;
-  background-color: #171717;
-  border: 1px solid #3b3b3b;
-  color: #ffffff;
-  font-size: 14px;
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-light);
+  font-size: var(--font-size-sm);
   box-sizing: border-box;
 }
 
@@ -97,35 +98,21 @@
   height: auto;
 }
 
-.modal-form textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #171717;
-  border: 1px solid #3b3b3b;
-  color: #ffffff;
-  font-size: 14px;
-  box-sizing: border-box;
-}
-
 .modal-form textarea::placeholder {
-  color: #a9a9a9;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  color: var(--color-text-muted);
+  font-family: var(--font-family-main);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
 }
 
-.modal-form select {
-  color: #a9a9a9;
-}
-
+.modal-form select,
 .modal-form select:invalid {
-  color: #a9a9a9;
+  color: var(--color-text-muted);
 }
 
 .modal-form label {
-  font-size: 14px;
-  color: #a9a9a9;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
   cursor: pointer;
 }
 
@@ -135,73 +122,55 @@
   gap: 24px;
 }
 
-.modal-buttons .saveButton {
-  background-color: #7be4e8;
-  color: #000000;
+.modal-buttons .saveButton,
+.modal-buttons .deleteButton {
+  background-color: var(--color-primary);
+  color: var(--color-text-dark);
   border: none;
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   width: 159px;
   height: 46px;
-  top: 551px;
-  left: 24px;
   margin-top: 20px;
 }
 
 .modal-buttons .cancelButton {
   background-color: transparent;
-  color: #ffffff;
+  color: var(--color-text-light);
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   width: 159px;
   height: 46px;
-  border: 1px solid #3b3b3b;
+  border: 1px solid var(--color-border);
 }
 
 .modal p {
-  color: #a9a9a9;
-}
-
-.modal-buttons .deleteButton {
-  background-color: #e14348;
-  color: #000000;
-  border: none;
-  padding: 12px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  width: 159px;
-  height: 46px;
-  top: 551px;
-  left: 24px;
-  margin-top: 20px;
+  color: var(--color-text-muted);
 }
 
 .bank-account-radio label {
-  display: block;
-  width: 345px;
-  height: 48px;
-  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--color-border);
   border: 1px solid gray;
   padding: 16px;
+  border-radius: var(--border-radius-md);
+  width: 345px;
+  height: 48px;
   margin-bottom: 10px;
   cursor: pointer;
-  align-items: center;
-  display: flex;
-  gap: 10px;
-  background-color: #3b3b3b;
   transition: background-color 0.3s ease;
 }
 
 .bank-account-radio label:hover {
-  background-color: #7be4e866;
+  background-color: var(--color-primary-transparent);
 }
 
 .bank-account-radio input[type="radio"] {
@@ -211,18 +180,16 @@
 }
 
 .payNow-button {
-  background-color: #7be4e8;
-  color: #000000;
+  background-color: var(--color-primary);
+  color: var(--color-text-dark);
   border: none;
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   width: 345px;
   height: 46px;
-  top: 551px;
-  left: 24px;
   margin-top: 50px;
 }
 
@@ -235,18 +202,18 @@
   }
 
   .modal-header h2 {
-    font-size: 20px;
+    font-size: var(--font-size-xl);
   }
 
   .modal-header p {
-    font-size: 13px;
+    font-size: var(--font-size-xs);
   }
 
   .modal-form input,
   .modal-form select,
   .modal-form textarea {
     height: 44px;
-    font-size: 13px;
+    font-size: var(--font-size-xs);
   }
 
   .modal-buttons {
@@ -260,7 +227,7 @@
   .modal-buttons .deleteButton {
     width: 100%;
     height: 44px;
-    font-size: 14px;
+    font-size: var(--font-size-sm);
     padding: 10px 14px;
   }
 
@@ -269,7 +236,7 @@
     height: auto;
     padding: 12px;
     flex-wrap: wrap;
-    font-size: 13px;
+    font-size: var(--font-size-xs);
   }
 
   .bank-account-radio input[type="radio"] {
@@ -280,7 +247,7 @@
   .payNow-button {
     width: 100%;
     height: 44px;
-    font-size: 14px;
+    font-size: var(--font-size-sm);
     margin-top: 30px;
   }
 }

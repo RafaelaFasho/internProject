@@ -21,3 +21,45 @@ body {
   margin: 0;
   padding: 0;
 }
+
+:root {
+  /* Ngjyrat kryesore */
+  --color-bg-main: #2b2a2a;
+  --color-bg-dark: #121212;
+  --color-bg-secondary: #171717;
+  --color-bg-sidebar: #121212;
+  --color-border: #3b3b3b;
+  --color-primary: #7be4e8;
+  --color-primary-transparent: #7be4e866;
+  --color-text-light: #ffffff;
+  --color-text-muted: #a9a9a9;
+  --color-text-muted-dark: #777777;
+  --color-text-danger: #e14348;
+  --color-text-danger-alt: #cf5254;
+  --color-text-dark: #161616;
+
+  /* Font familje */
+  --font-family-main: "Inter", sans-serif;
+  --font-family-alt: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  /* Font weight */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* Font size */
+  --font-size-xxs: 12px;
+  --font-size-xs: 13px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-xxl: 22px;
+  --font-size-xxxl: 24px;
+
+  /* Border radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 15px;
+  --border-radius-pill: 70px;
+}
